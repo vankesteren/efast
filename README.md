@@ -1,2 +1,2 @@
 # efast
- Exploratory Factor Analysis with Structured Residuals
+Exploratory Factor Analysis with Structured Residuals
