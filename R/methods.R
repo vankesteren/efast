@@ -6,6 +6,7 @@
 #' @export
 is_efast <- function(x) {
   if (!inherits(x, "lavaan")) return(FALSE)
+  if (is.null(x@external$type)) return(FALSE)
   if (substr(x@external$type, 1, 5) == "EFAST") return(TRUE)
   FALSE
 }
@@ -18,6 +19,7 @@ is_efast <- function(x) {
 #' @export
 is_efa <- function(x) {
   if (!inherits(x, "lavaan")) return(FALSE)
+  if (is.null(x@external$type)) return(FALSE)
   if (x@external$type == "EFA") return(TRUE)
   FALSE
 }
