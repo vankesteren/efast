@@ -16,7 +16,7 @@ test_that("EFAST fitting works", {
 
 
 test_that("EFA fitting works", {
-  fit_efa <- efa_esem(data = lavaan::HolzingerSwineford1939[,7:14], M = 3)
+  fit_efa <- efa_esem(data = lavaan::HolzingerSwineford1939[,7:15], M = 3)
   expect_true(is_efa(fit_efa))
   expect_true(inherits(efast_loadings(fit_efa), "loadings"))
 })
