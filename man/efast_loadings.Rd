@@ -8,6 +8,8 @@ efast_loadings(fit, symmetry = FALSE)
 }
 \arguments{
 \item{fit}{efa or efast model}
+
+\item{symmetry}{whether to display the left and right hemisphere loadings side-by-side}
 }
 \description{
 Get loadings

@@ -46,7 +46,7 @@ The `efast` package is a wrapper around the `lavaan` package[^lavaan] with a con
 
 An EFAST model for the volume ROI data with 6 factors can thus be computed as follows:
 
-```{r efast, cache=TRUE}
+```{r efast}
 efast_fit <- efast_hemi(
   data   = roi_volume, 
   M      = 6, 
@@ -68,7 +68,7 @@ For example, we can see in the RMSEA value of `r fitmeasures(efast_fit)$rmsea) t
 
 Below we compare the EFAST model to an identically estimated EFA model with 6 factors.
 
-```{r efafit, cache=TRUE}
+```{r efafit}
 efa_fit <- efa_esem(data = roi_volume, M = 6)
 ```
 

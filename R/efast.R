@@ -127,6 +127,21 @@ efa_esem <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
   res
 }
 
+
+#' Synthesised volume data for DKT-atlas ROIs.
+#'
+#' This data has been synthesised on the basis of real-world data from the
+#' Cam-CAN cohort. It contains 68 grey matter volume measurements (34 LH and 34
+#' RH ROIs) for 647 participants.
+#'
+#' @name roi_volume
+#' @usage data(roi_volume)
+#' @docType data
+#' @references \url{cam-can.org}
+#' @keywords datasets
+#' @format A data frame with 647 rows and 68 columns
+NULL
+
 #' model_syntax
 #' @rdname model_syntax
 #' @keywords internal

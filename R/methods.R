@@ -27,6 +27,7 @@ is_efa <- function(x) {
 #' Get loadings
 #'
 #' @param fit efa or efast model
+#' @param symmetry whether to display the left and right hemisphere loadings side-by-side
 #'
 #' @export
 efast_loadings <- function(fit, symmetry = FALSE) {
