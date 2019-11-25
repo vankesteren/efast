@@ -4,7 +4,7 @@
 \alias{efast_loadings}
 \title{Get loadings}
 \usage{
-efast_loadings(fit)
+efast_loadings(fit, symmetry = FALSE)
 }
 \arguments{
 \item{fit}{efa or efast model}
