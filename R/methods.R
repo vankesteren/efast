@@ -29,13 +29,30 @@ is_efa <- function(x) {
 #' @param fit efa or efast model
 #'
 #' @export
-efast_loadings <- function(fit) {
+efast_loadings <- function(fit, symmetry = FALSE) {
   if (!is_efast(fit) && !is_efa(fit)) stop("Enter an EFAST or EFA model.")
-  glist   <- fit@Model@GLIST
-  efa_idx <- fit@Model@lv.efa.idx[[1]]$efa1
-  lam <- glist$lambda[, efa_idx]
-  colnames(lam) <- paste0("F", 1:length(efa_idx))
+  glist         <- fit@Model@GLIST
+  efa_idx       <- fit@Model@lv.efa.idx[[1]]$efa1
+  M             <- length(efa_idx)
+  lam           <- glist$lambda[, efa_idx]
+  colnames(lam) <- paste0("F", 1:M)
   rownames(lam) <- fit@Model@dimNames[[1]][[1]]
+  if (symmetry) {
+    # find the number of variables per hemisphere
+    nn     <- fit@Model@nvar / 2
+    lh_lam <- lam[1:nn,]
+    rh_lam <- lam[(nn + 1):(2*nn),]
+    lam    <- matrix(0, nn, M*2)
+    for (i in 1:M) {
+      lam[,i*2 - 1] <- lh_lam[,i]
+      lam[,i*2]     <- rh_lam[,i]
+    }
+    colnames(lam) <- paste0(
+      rep(paste0("F", 1:M), each = 2),
+      rep(c("_lh", "_rh"), M)
+    )
+    rownames(lam) <- fit@Model@dimNames[[3]][[2]][-efa_idx]
+  }
   return(structure(lam, class = "loadings"))
 }
 
@@ -84,7 +101,6 @@ decomposition <- function(fit) {
   lam_e <- glist$lambda[, efa_idx]
   psi_e <- crossprod(H)
   factor_implied <- tcrossprod(lam_e %*% psi_e, lam_e)
-
 
   # structure
   lam_r <- glist$lambda[,-efa_idx]

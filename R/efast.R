@@ -31,8 +31,8 @@
 #'
 #' @export
 efast_hemi <- function(data, M, lh_idx, rh_idx, roi_names, constrain = FALSE,
-                  auto.fix.first = FALSE, auto.var = TRUE, auto.efa = TRUE,
-                  information = "observed", std.ov = TRUE, ...) {
+                       auto.fix.first = FALSE, auto.var = TRUE, auto.efa = TRUE,
+                       information = "observed", std.ov = TRUE, ...) {
   if (!is.data.frame(data))
     stop("data argument should be a data.frame")
   if (!is.numeric(M) || M < 2)
@@ -169,7 +169,7 @@ hemi_model  <- function(rois, var_const = FALSE) {
       mod <- paste0(mod, "cov_lat > 0\n")
     } else {
       mod <- paste0(mod, roi, " ~~ cov_", roi, "*", roi, "\n")
-      mod <- paste0(mod, "cov_", roi, "> 0\n")
+      mod <- paste0(mod, "cov_", roi, " > 0\n")
     }
   }
 
