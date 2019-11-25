@@ -4,3 +4,5 @@
 ^README.md$
 ^.travis.yml$
 ^img.*$
+^doc$
+^Meta$

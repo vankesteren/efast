@@ -1,0 +1,132 @@
+---
+title: "EFAST for Structural Brain Imaging Data"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{EFAST for Structural Brain Imaging Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(efast)
+library(corrplot)
+```
+
+In this tutorial, we show how to run an exploratory factor analysis with structured residuals (EFAST) model on a dataset with estimated volume on 68 regions of interest (ROIs) in both hemispheres. Data of 647 participants from the Cam-CAN cohort[^camcan] is included in the `efast` package -- synthesized through the `synthpop` package[^synthpop] to preserve individual subject's privacy. The data can be loaded as follows:
+
+```{r load}
+data("roi_volume")
+```
+
+Upon plotting the correlation matrix of this dataset, we can see that there are secondary diagonals. These indicate symmetry structure: the first 34 variables are the left-hemisphere ROIs, and the last 34 variables are their contralateral homologues. The strong secondary diagonals show that the contralateral homologues correlate strongly in their amount of volume. The correlation matrix can be plotted using the `corrplot` package[^corrplot] as follows:
+
+```{r corplot, fig.align='center'}
+corrplot(cor(roi_volume), method = "shade", tl.pos = "n", cl.pos = "n")
+``` 
+
+The goal of the EFAST routine is to extract $M$ factors that explain the correlations among the ROIs as well as possible, while taking into account the symmetry. The resulting factors can then be used for further analysis, for example to compare different groups in their structural volume.
+
+## Estimating an EFAST model using the `efast` package
+The `efast` package is a wrapper around the `lavaan` package[^lavaan] with a convenient interface for EFAST models. In addition, it adds some detailed constraints on the parameters, specifically for the EFAST model, that aid in estimation. The parameters that need to be entered by the researcher are:
+
+- `data` The dataset to be analyzed
+- `M` The number of factors to extract
+- `lh_idx` The column indices of the left-hemisphere variables in the data
+- `rh_idx` The column indices of the right-hemisphere variables in the data
+
+An EFAST model for the volume ROI data with 6 factors can thus be computed as follows:
+
+```{r efast, cache=TRUE}
+efast_fit <- efast_hemi(
+  data   = roi_volume, 
+  M      = 6, 
+  lh_idx = 1:34,
+  rh_idx = 35:68
+)
+```
+
+The function allows for other arguments to be passed on to the `lavaan` function as well, to change many aspects of model estimation (see `?lavoptions` for more information). Most notably, the `rotation` can be changed here as well, if a different rotation than the default oblique geomin rotation is desired. The resulting object also inherits from the `lavaan` class, meaning methods such as `summary()` and `print()` are, by default, implemented in this object.
+
+## Model fit and model comparison
+Since an EFAST model is a structural equation model, the entire range of fit metrics is available (e.g, $\Chi^2$, AIC, BIC, CFI, TLI, RMSEA). They can be investigated using the `fitmeasures()` command from `lavaan`:
+
+```{r fit}
+fitmeasures(efast_fit)
+```
+
+For example, we can see in the RMSEA value of `r fitmeasures(efast_fit)$rmsea) that the model fit is quite good -- the model approximates the elements of the observed covariance matrix well. Additionally, the fit of different models with different numbers of factors can also be investigated to determine the optimal number of factors. Another model comparison that can be made is to a model without symmetry structure. This can be done in several ways, for example through the relative fit indices such as BIC and AIC, or through likelihood ratio tests.
+
+Below we compare the EFAST model to an identically estimated EFA model with 6 factors.
+
+```{r efafit, cache=TRUE}
+efa_fit <- efa_esem(data = roi_volume, M = 6)
+```
+
+A likelihood ratio test can be performed via the `anova()` or the `lavTestLRT()` function from the `lavaan` package:
+
+```{r modelcompare, warning=FALSE}
+lavTestLRT(efast_fit, efa_fit)
+```
+
+The resulting table shows that the EFAST model with 6 factors fits significantly better than the pure EFA model with 6 factors: χ²(34) = 2837.6, _p_ < .001. 
+
+## Dimension reduction
+Two relevant methods for performing dimension reduction through EFAST are `predict()` for extracting the per-participant factor values for further analysis, and the `efast_loadings()` function, for extracting and displaying the factor loadings to give an interpretation to each of the factors. The loadings can optionally be displayed in a convenient symmetric way, with the loadings of the left and right hemispheres for each ROI side-by-side (note that while this aids interpretation of the loadings themselves, such as easily showing that factor 2 is relatively assymmetric, the bottom table with the proportions of explained variance now displays wrong values):
+```{r, include=FALSE}
+options(width = 100)
+```
+
+```{r loadings}
+print(efast_loadings(efast_fit, symmetry = TRUE), cutoff = 0.3)
+```
+
+Below, the factors scores for each person are stored. The `predict()` function generates values (factor scores) for all latent variables in the model, and the first 6 of these are the EFA factors. As an example of further analysis, these scores can be used to generate 2 latent brain volume subgroups using k-means clustering: one group with relatively low volume, and one with relatively high volume.
+
+```{r clus}
+pred <- predict(efast_fit)[,1:6]
+clus <- kmeans(pred, 2)
+clus
+``` 
+
+We can then plot the scores of the participants on the first two factors and show the clustering by using colours:
+```{r clusplot, out.width='50%', fig.height=5, fig.width=5, fig.align='center'}
+plot(pred[,c(1, 2)], bg = c("magenta", "orange")[clus$cluster], 
+     pch = 21, asp = 1, bty = "L")
+```
+
+## Lateralization
+
+The ROI method factors themselves can be used to determine per ROI the amount of symmetry and, conversely, the amount of lateralization. 
+
+Through including lateralization index coefficients in the model code (see `extending the EFAST model` below), the `efast` package provides a nice convenience function for showing how lateralized each ROI is, with automatic standard errors based on the delta method. These standard errors can also be based on bootstrapping, for example, by changing the `efast_hemi()` call to include `se = "bootstrap"`. These lateralization indices -- indicating how much residual variance in the observed variables cannot be explained by the symmetry structure -- are computed for each ROI as
+$$\frac{\sum_{lh, rh} \text{residual variance}}{\sum_{lh, rh} \text{residual variance} + \sum_{lh, rh} \text{variance due to symmetry}}$$
+
+```{r later}
+lateralization(efast_fit)
+``` 
+
+## Extending the EFAST model
+
+The syntax of the EFAST model is available as a component of the fitted model (`fit@external$syntax`). This means that any EFAST model can be easily extended with further variables, such as predicting participant phenotype on the basis of the factors. This extension would amount to adding the line `phenotype_variable ~ F1 + F2 + F3 + F4 + F5 + F6` to the current model syntax. The extended model can then be fitted by a call to the fitting function from the `lavaan` package: `lavaan(extended_model, raw_data, auto.fix.first = FALSE, auto.var = TRUE, auto.efa = TRUE, information = "observed", std.ov = TRUE)`. By adding this extension, `lavaan` will in one step find those factors that best explain the covariance between brain regions and the phenotype of interest, reasonably similar to the idea of PLS regression. See the syntax below for the fitted EFAST model from this vignette (NB: additional constraints are added to aid in convergence of the parameters, which is why the model syntax is so long).
+
+```{r extend}
+cat(efast_fit@external$syntax)
+```
+
+[^synthpop]: Beata Nowok, Gillian M. Raab, Chris Dibben (2016). synthpop: Bespoke Creation of Synthetic
+  Data in R. Journal of Statistical Software, 74(11), 1-26. doi:10.18637/jss.v074.i11
+[^camcan]: The Cam-CAN cohort (2015). [https://www.cam-can.org/](https://www.cam-can.org/)
+[^corrplot]: Taiyun Wei and Viliam Simko (2017). R package "corrplot": Visualization of a Correlation
+  Matrix (Version 0.84). Available from https://github.com/taiyun/corrplot
+[^lavaan]: Yves Rosseel (2012). lavaan: An R Package for Structural Equation Modeling. Journal of
+  Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/.
