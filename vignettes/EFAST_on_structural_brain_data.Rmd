@@ -46,13 +46,17 @@ The `efast` package is a wrapper around the `lavaan` package[^lavaan] with a con
 
 An EFAST model for the volume ROI data with 6 factors can thus be computed as follows:
 
-```{r efast}
+```{r efast, eval=FALSE}
 efast_fit <- efast_hemi(
   data   = roi_volume, 
   M      = 6, 
   lh_idx = 1:34,
   rh_idx = 35:68
 )
+```
+
+```{r efast_true, include=FALSE}
+efast_fit <- readRDS("efast_fit.rds")
 ```
 
 The function allows for other arguments to be passed on to the `lavaan` function as well, to change many aspects of model estimation (see `?lavoptions` for more information). Most notably, the `rotation` can be changed here as well, if a different rotation than the default oblique geomin rotation is desired. The resulting object also inherits from the `lavaan` class, meaning methods such as `summary()` and `print()` are, by default, implemented in this object.
@@ -68,8 +72,11 @@ For example, we can see in the RMSEA value of `r fitmeasures(efast_fit)$rmsea) t
 
 Below we compare the EFAST model to an identically estimated EFA model with 6 factors.
 
-```{r efafit}
+```{r efafit, eval = FALSE}
 efa_fit <- efa_esem(data = roi_volume, M = 6)
+```
+```{r efa_true, include=FALSE}
+efa_fit <- readRDS("efa_fit.rds")
 ```
 
 A likelihood ratio test can be performed via the `anova()` or the `lavTestLRT()` function from the `lavaan` package:
