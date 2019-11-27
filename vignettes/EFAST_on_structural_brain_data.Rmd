@@ -62,13 +62,13 @@ efast_fit <- readRDS("efast_fit.rds")
 The function allows for other arguments to be passed on to the `lavaan` function as well, to change many aspects of model estimation (see `?lavoptions` for more information). Most notably, the `rotation` can be changed here as well, if a different rotation than the default oblique geomin rotation is desired. The resulting object also inherits from the `lavaan` class, meaning methods such as `summary()` and `print()` are, by default, implemented in this object.
 
 ## Model fit and model comparison
-Since an EFAST model is a structural equation model, the entire range of fit metrics is available (e.g, $\Chi^2$, AIC, BIC, CFI, TLI, RMSEA). They can be investigated using the `fitmeasures()` command from `lavaan`:
+Since an EFAST model is a structural equation model, the entire range of fit metrics is available (e.g, $\chi^2$, AIC, BIC, CFI, TLI, RMSEA). They can be investigated using the `fitmeasures()` command from `lavaan`:
 
 ```{r fit}
 fitmeasures(efast_fit)
 ```
 
-For example, we can see in the RMSEA value of `r fitmeasures(efast_fit)$rmsea) that the model fit is quite good -- the model approximates the elements of the observed covariance matrix well. Additionally, the fit of different models with different numbers of factors can also be investigated to determine the optimal number of factors. Another model comparison that can be made is to a model without symmetry structure. This can be done in several ways, for example through the relative fit indices such as BIC and AIC, or through likelihood ratio tests.
+For example, we can see in the RMSEA value of `r fitmeasures(efast_fit)["rmsea"]` that the model fit is quite good -- the model approximates the elements of the observed covariance matrix well. Additionally, the fit of different models with different numbers of factors can also be investigated to determine the optimal number of factors. Another model comparison that can be made is to a model without symmetry structure. This can be done in several ways, for example through the relative fit indices such as BIC and AIC, or through likelihood ratio tests.
 
 Below we compare the EFAST model to an identically estimated EFA model with 6 factors.
 
@@ -85,7 +85,7 @@ A likelihood ratio test can be performed via the `anova()` or the `lavTestLRT()`
 lavTestLRT(efast_fit, efa_fit)
 ```
 
-The resulting table shows that the EFAST model with 6 factors fits significantly better than the pure EFA model with 6 factors: χ²(34) = 2837.6, _p_ < .001. 
+The resulting table shows that the EFAST model with 6 factors fits significantly better than the pure EFA model with 6 factors: $\chi^2$(34) = 2837.6, _p_ < .001. 
 
 ## Dimension reduction
 Two relevant methods for performing dimension reduction through EFAST are `predict()` for extracting the per-participant factor values for further analysis, and the `efast_loadings()` function, for extracting and displaying the factor loadings to give an interpretation to each of the factors. The loadings can optionally be displayed in a convenient symmetric way, with the loadings of the left and right hemispheres for each ROI side-by-side (note that while this aids interpretation of the loadings themselves, such as easily showing that factor 2 is relatively assymmetric, the bottom table with the proportions of explained variance now displays wrong values):
