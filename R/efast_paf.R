@@ -24,7 +24,7 @@ BBtsim <- tcrossprod(Bsim)
 Hsim <- diag(diag(AAtsim + BBtsim))
 R <- AAtsim + BBtsim + diag(P) - Hsim
 
-fa <- psych::fa(R, fm = "pa", nfactors = 2)
+#fa <- psych::fa(R, fm = "pa", nfactors = 2)
 
 Imat <- diag(P)
 diag(Imat[1:5, 6:10]) <- diag(Imat[6:10, 1:5]) <- 1
