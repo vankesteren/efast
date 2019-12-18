@@ -1,7 +1,9 @@
 ---
 title: "EFAST for Structural Brain Imaging Data"
+author: "Erik-Jan van Kesteren & Rogier Kievit"
+geometry: margin=4cm
 output: 
-  rmarkdown::html_vignette:
+  rmarkdown::pdf_document:
     toc: true
 vignette: >
   %\VignetteIndexEntry{EFAST for Structural Brain Imaging Data}
@@ -15,9 +17,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(width = 70)
 ```
 
-```{r setup}
+```{r setup, include=FALSE}
 library(efast)
 library(corrplot)
 ```
@@ -30,7 +33,7 @@ data("roi_volume")
 
 Upon plotting the correlation matrix of this dataset, we can see that there are secondary diagonals. These indicate symmetry structure: the first 34 variables are the left-hemisphere ROIs, and the last 34 variables are their contralateral homologues. The strong secondary diagonals show that the contralateral homologues correlate strongly in their amount of volume. The correlation matrix can be plotted using the `corrplot` package[^corrplot] as follows:
 
-```{r corplot, fig.align='center'}
+```{r corplot, fig.align='center', out.width="80%"}
 corrplot(cor(roi_volume), method = "shade", tl.pos = "n", cl.pos = "n")
 ``` 
 
@@ -89,12 +92,17 @@ The resulting table shows that the EFAST model with 6 factors fits significantly
 
 ## Dimension reduction
 Two relevant methods for performing dimension reduction through EFAST are `predict()` for extracting the per-participant factor values for further analysis, and the `efast_loadings()` function, for extracting and displaying the factor loadings to give an interpretation to each of the factors. The loadings can optionally be displayed in a convenient symmetric way, with the loadings of the left and right hemispheres for each ROI side-by-side (note that while this aids interpretation of the loadings themselves, such as easily showing that factor 2 is relatively assymmetric, the bottom table with the proportions of explained variance now displays wrong values):
-```{r, include=FALSE}
-options(width = 100)
+```{r loadings, eval = FALSE}
+lds <- efast_loadings(efast_fit, symmetry = TRUE)
 ```
 
-```{r loadings}
-print(efast_loadings(efast_fit, symmetry = TRUE), cutoff = 0.3)
+```{r loadings_real, include = FALSE}
+lds <- structure(efast_loadings(efast_fit, symmetry = TRUE)[,1:8], class = "loadings")
+```
+
+```{r loadings2}
+# we only show the loadings for the first 4 factors to ensure it fits
+print(lds, cutoff = 0.3)
 ```
 
 Below, the factors scores for each person are stored. The `predict()` function generates values (factor scores) for all latent variables in the model, and the first 6 of these are the EFA factors. As an example of further analysis, these scores can be used to generate 2 latent brain volume subgroups using k-means clustering: one group with relatively low volume, and one with relatively high volume.
