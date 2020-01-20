@@ -10,6 +10,8 @@
       highlight: zenburn
 ---
 
+[Go back](../)
+
 ## Introduction
 ```{r, include = FALSE}
 options(width = 70)
