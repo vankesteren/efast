@@ -4,9 +4,20 @@
 \alias{efast_hemi}
 \title{Estimate an EFAST-hemi model}
 \usage{
-efast_hemi(data, M, lh_idx, rh_idx, roi_names, constrain = FALSE,
-  auto.fix.first = FALSE, auto.var = TRUE, auto.efa = TRUE,
-  information = "observed", std.ov = TRUE, ...)
+efast_hemi(
+  data,
+  M,
+  lh_idx,
+  rh_idx,
+  roi_names,
+  constrain = FALSE,
+  auto.fix.first = FALSE,
+  auto.var = TRUE,
+  auto.efa = TRUE,
+  information = "observed",
+  std.ov = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{<data.frame> the dataset}

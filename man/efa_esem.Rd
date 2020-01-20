@@ -4,8 +4,16 @@
 \alias{efa_esem}
 \title{Estimate an EFA model in lavaan}
 \usage{
-efa_esem(data, M, auto.fix.first = FALSE, auto.var = TRUE,
-  auto.efa = TRUE, information = "observed", std.ov = TRUE, ...)
+efa_esem(
+  data,
+  M,
+  auto.fix.first = FALSE,
+  auto.var = TRUE,
+  auto.efa = TRUE,
+  information = "observed",
+  std.ov = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{<data.frame> the dataset}

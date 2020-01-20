@@ -4,8 +4,13 @@
 \alias{simulate_efast}
 \title{Simulate data from an efast matrix}
 \usage{
-simulate_efast(N = 650L, lam_lat = 0.595, lam_bil = 0.7,
-  psi_cov = 0.5, cor_uniq = 0.4)
+simulate_efast(
+  N = 650L,
+  lam_lat = 0.595,
+  lam_bil = 0.7,
+  psi_cov = 0.5,
+  cor_uniq = 0.4
+)
 }
 \arguments{
 \item{N}{<int> Sample size}
