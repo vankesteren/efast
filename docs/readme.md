@@ -13,4 +13,5 @@ remotes::install_github("vankesteren/efast")
 Follow the tutorials here:
 
 - [EFAST models on structural brain imaging data](./efast_models)
+- [Background: EFA models using lavaan](./efa_lavaan)
 - [Extending EFAST models](./extend_efast)
