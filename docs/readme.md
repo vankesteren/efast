@@ -1,8 +1,8 @@
-# Getting started with EFAST
-
-<p>
-<img src="efast_icon.png" width="150px"></img>
+<p align="center">
+<img src="efast_icon.png" width="150px">
 </p>
+
+# Getting started with EFAST
 
 Download the package from GitHub using the `remotes` or `devtools` package:
 
