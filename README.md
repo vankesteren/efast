@@ -32,7 +32,7 @@ lateralization(fit_sim)
 ```
 
 #### Tutorial
-An extended tutorial for using EFAST can be found on the [GitHub pages site](vankesteren.github.io/efast).
+An extended tutorial for using EFAST can be found on the [GitHub pages site](https://vankesteren.github.io/efast).
 
 
 #### Support
