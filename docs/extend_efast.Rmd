@@ -1,0 +1,46 @@
+---
+  title: "Extending EFAST models"
+  author: "Erik-Jan van Kesteren & Rogier Kievit"
+  geometry: margin=4cm
+  output:
+    rmarkdown::html_document:
+      toc: false
+      theme: flatly
+      highlight: zenburn
+---
+
+[Go back](../efast)
+
+```{r efast_true, include=FALSE}
+library(efast)
+library(corrplot)
+options(width = 70)
+data("roi_volume")
+efast_fit <- readRDS("efast_fit.rds")
+```
+
+The `lavaan` syntax of the EFAST model is available as a component of the fitted model (`fit@external$syntax`). This means that any EFAST model can be easily extended with further variables, such as predicting participant phenotype on the basis of the factors. This extension would amount to adding the following line to the current example model syntax:
+```
+phenotype_variable ~ F1 + F2 + F3 + F4 + F5 + F6
+```
+The extended model can then be fitted by a call to the fitting function from the `lavaan` package: 
+```{r eval=FALSE}
+lavaan(
+  model          = extended_model, 
+  data           = raw_data, 
+  auto.fix.first = FALSE, 
+  auto.var       = TRUE, 
+  auto.efa       = TRUE, 
+  information    = "observed", 
+  std.ov         = TRUE
+)
+```
+By adding this extension, `lavaan` will in one step find those factors that best explain the covariance between brain regions and the phenotype of interest, reasonably similar to the idea of PLS regression. In this way, the EFAST model can serve as a starting point for an ESEM with structural parameters.
+
+# Full syntax
+
+Below is the full syntax for the the fitted EFAST model from this tutorial, with 6 latent factors and a symmetry structure. Within this syntax, additional constraints are added to aid in convergence of the parameters.
+
+```{r extend}
+cat(efast_fit@external$syntax)
+```

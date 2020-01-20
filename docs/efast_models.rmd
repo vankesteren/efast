@@ -10,7 +10,7 @@
       highlight: zenburn
 ---
 
-[Go back](../)
+[Go back](../efast)
 
 ## Introduction
 ```{r, include = FALSE}
@@ -125,30 +125,6 @@ $$\frac{\sum_{lh, rh} \text{residual variance}}{\sum_{lh, rh} \text{residual var
 
 ```{r later}
 lateralization(efast_fit)
-```
-
-## Extending the EFAST model
-
-The syntax of the EFAST model is available as a component of the fitted model (`fit@external$syntax`). This means that any EFAST model can be easily extended with further variables, such as predicting participant phenotype on the basis of the factors. This extension would amount to adding the following line to the current example model syntax:
-```
-phenotype_variable ~ F1 + F2 + F3 + F4 + F5 + F6
-```
-The extended model can then be fitted by a call to the fitting function from the `lavaan` package: 
-```{r eval=FALSE}
-lavaan(
-  model          = extended_model, 
-  data           = raw_data, 
-  auto.fix.first = FALSE, 
-  auto.var       = TRUE, 
-  auto.efa       = TRUE, 
-  information    = "observed", 
-  std.ov         = TRUE
-)
-```
-By adding this extension, `lavaan` will in one step find those factors that best explain the covariance between brain regions and the phenotype of interest, reasonably similar to the idea of PLS regression. See the syntax below for the fitted EFAST model from this vignette (NB: additional constraints are added to aid in convergence of the parameters, which is why the model syntax is so long).
-
-```{r extend}
-cat(efast_fit@external$syntax)
 ```
 
 [^synthpop]: Beata Nowok, Gillian M. Raab, Chris Dibben (2016). synthpop: Bespoke Creation of Synthetic
