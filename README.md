@@ -13,7 +13,7 @@ Create and fit exploratory factor analysis with structured residuals (EFAST) mod
 #### Installing efast
 Run the following code to install `efast` with the tutorial vignette.
 ```r
-remotes::install_github("vankesteren/efast", build_vignettes = TRUE)
+remotes::install_github("vankesteren/efast")
 ```
 
 #### Quickstart
@@ -32,10 +32,8 @@ lateralization(fit_sim)
 ```
 
 #### Tutorial
-An extended tutorial for using EFAST is included in the vignette.
-```r
-vignette("efast_braindata")
-```
+An extended tutorial for using EFAST can be found on the [GitHub pages site](vankesteren.github.io/efast).
+
 
 #### Support
 Questions can be asked on the [`issues page`](https://github.com/vankesteren/efast/issues). I'll try to answer them as soon as possible!
