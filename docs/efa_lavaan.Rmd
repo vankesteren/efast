@@ -1,0 +1,22 @@
+---
+  title: "Background: EFA models using lavaan"
+  author: "Erik-Jan van Kesteren & Rogier Kievit"
+  geometry: margin=4cm
+  output:
+    rmarkdown::html_document:
+      toc: false
+      theme: flatly
+      highlight: zenburn
+---
+
+[Go back](../efast)
+
+```{r efast_true, include=FALSE}
+library(efast)
+library(corrplot)
+options(width = 70)
+data("roi_volume")
+efa_fit <- readRDS("efa_fit.rds")
+```
+
+The `lavaan` syntax since version `0.6.3` 

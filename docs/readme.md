@@ -1,5 +1,7 @@
 # Getting started with EFAST
 
+<img src="../img/efast_icon.png" width="150px"></img>
+
 Download the package from GitHub using the `remotes` or `devtools` package:
 
 ```r
