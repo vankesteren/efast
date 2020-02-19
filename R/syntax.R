@@ -1,0 +1,68 @@
+
+#' model_syntax
+#' @rdname model_syntax
+#' @keywords internal
+efa_model <- function(dat, M = 3) {
+  # input: dataset
+  # output: efa model with M factors
+  nm <- colnames(dat)
+  mod <- paste(
+    "# Exploratory factor model\n# ------------------------\n",
+    paste0("efa('efa1')*F", 1:M, collapse = " +\n"),
+    "=~",
+    paste(nm, collapse = " + ")
+  )
+  # put relaxed constraints on the residual variances
+  mod <- paste0(mod, "\n\n# Uniqueness constraints\n# ----------------------\n")
+  for (p in 1:ncol(dat)) {
+    var_p <- stats::var(dat[,p])
+    nm_p  <- nm[p]
+    mod <- paste0(mod, nm_p,
+                  " ~~ lower(", -var_p * 0.05, ")*", nm_p,
+                  " + upper(", var_p * 1.05, ")*", nm_p,
+                  " + v_", p, "*", nm_p, "\n")
+  }
+  return(mod)
+}
+
+#' hemi_model
+#' @rdname model_syntax
+#' @keywords internal
+hemi_model  <- function(rois, var_const = FALSE) {
+  # input: roi names
+  # output: lavaan structure model
+  mod <- "# Hemisphere model\n# ----------------\n"
+  for (roi in rois) {
+    mod <- paste0(mod, roi, " =~ 1*lh_", roi, " + 1*rh_", roi, "\n")
+  }
+  mod <- paste0(mod, "\n# Hemisphere covariances\n# ----------------------\n")
+  for (roi in rois) {
+    if (var_const) {
+      mod <- paste0(mod, roi, " ~~ lower(0)*", roi,
+                    " + cov_lat*", roi, "\n")
+    } else {
+      mod <- paste0(mod, roi, " ~~ lower(0)*", roi,
+                    " + cov_", roi, "*", roi, "\n")
+    }
+  }
+
+  mod
+}
+
+#' lat_index stuff
+#' @rdname model_syntax
+#' @keywords internal
+lat_index <- function(rois) {
+  # input: roi names
+  # output: lateralisation index per region code
+  nroi <- length(rois)
+
+  mod <- "# Lateralization index code\n# -----------------------------------\n"
+
+  for (i in 1:nroi) {
+    mod <- paste0(mod, "usum_", rois[i], " := v_", i, " + v_", i + nroi, "\n")
+    mod <- paste0(mod, "LI_", rois[i], " := usum_", rois[i],
+                  " / (usum_", rois[i], " + 2*cov_", rois[i], ")\n")
+  }
+  mod
+}
