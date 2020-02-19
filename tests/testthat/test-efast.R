@@ -22,7 +22,7 @@ test_that("EFA fitting works", {
 })
 
 
-test_that("EFAST fitting on big data works and methods work", {
+test_that("EFAST fitting on big data works", {
   set.seed(45)
   test_dat <- as.data.frame(matrix(rnorm(5000), 100))
   fit_efast_big <- efast_hemi(
@@ -33,19 +33,28 @@ test_that("EFAST fitting on big data works and methods work", {
     constrain = FALSE
   )
   expect_true(is_efast(fit_efast_big))
-  li_tab <- lateralization(fit_efast_big)
-  expect_equal(
-    round(li_tab[,2], 3),
-    c(0.967, 0.997, 1, 1, 1, 0.44, 1, 0.839, 1, 1, 1, 0.943, 1, 0.888, 0.891,
-      1, 1, 0.984, 0.837, 0.749, 0.937, 1, 1, 1, 0.95)
-  )
-  comps <- decomposition(fit_efast_big)
-  expct <- (comps$factor + comps$residual + comps$structure)
-  expect_true(all(abs(comps$observed - expct) < 0.3))
+
 })
 
 test_that("Data generation works and efast thereon works", {
+  set.seed(45)
   simdat <- simulate_efast()
   fit_sim <- efast_hemi(simdat, M = 4, 1:17, 18:34)
   expect_true(is_efast(fit_sim))
+})
+
+test_that("Methods on efast objects work", {
+  set.seed(45)
+  simdat <- simulate_efast()
+  fit_sim <- efast_hemi(simdat, M = 4, 1:17, 18:34)
+  expect_true(is_efast(fit_sim))
+  li_tab <- lateralization(fit_sim)
+  expect_equal(
+    round(li_tab[,2], 3),
+    c(0.314, 0.299, 0.304, 0.321, 0.316, 0.282, 0.321, 0.274, 0.218,
+      0.219, 0.199, 0.217, 0.218, 0.200, 0.207, 0.221, 0.218)
+  )
+  comps <- decomposition(fit_sim)
+  expct <- (comps$factor + comps$residual + comps$structure)
+  expect_true(all(abs(comps$observed - expct) < 0.3))
 })

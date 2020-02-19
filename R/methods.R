@@ -103,15 +103,13 @@ decomposition <- function(fit) {
   psi_e <- crossprod(H)
   factor_implied <- tcrossprod(lam_e %*% psi_e, lam_e)
 
-  # structure
-  lam_r <- glist$lambda[,-efa_idx]
-  psi_r <- glist$psi[-efa_idx, -efa_idx]
-  structure_component <- tcrossprod(lam_r %*% psi_r, lam_r)
-
   # residual
-  residual_variance <- glist$theta
-  diag(residual_variance) <- diag(residual_variance) + diag(structure_component)
-  diag(structure_component) <- 0
+  theta <- glist$theta
+  residual_variance <- diag(diag(theta))
+
+  # structure
+  structure_component <- theta - residual_variance
+
 
   return(list(observed  = fit@SampleStats@cov[[1]],
               factor    = factor_implied,

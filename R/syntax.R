@@ -33,19 +33,12 @@ hemi_model  <- function(rois, var_const = FALSE) {
   # output: lavaan structure model
   mod <- "# Hemisphere model\n# ----------------\n"
   for (roi in rois) {
-    mod <- paste0(mod, roi, " =~ 1*lh_", roi, " + 1*rh_", roi, "\n")
-  }
-  mod <- paste0(mod, "\n# Hemisphere covariances\n# ----------------------\n")
-  for (roi in rois) {
     if (var_const) {
-      mod <- paste0(mod, roi, " ~~ lower(0)*", roi,
-                    " + cov_lat*", roi, "\n")
+      mod <- paste0(mod, "lh_", roi, " ~~ cov_lat*rh_", roi, "\n")
     } else {
-      mod <- paste0(mod, roi, " ~~ lower(0)*", roi,
-                    " + cov_", roi, "*", roi, "\n")
+      mod <- paste0(mod, "lh_", roi, " ~~ cov_", roi, "*rh_", roi, "\n")
     }
   }
-
   mod
 }
 
@@ -61,8 +54,9 @@ lat_index <- function(rois) {
 
   for (i in 1:nroi) {
     mod <- paste0(mod, "usum_", rois[i], " := v_", i, " + v_", i + nroi, "\n")
-    mod <- paste0(mod, "LI_", rois[i], " := usum_", rois[i],
-                  " / (usum_", rois[i], " + 2*cov_", rois[i], ")\n")
+    mod <- paste0(mod, "LI_", rois[i], " := ",
+                  "(usum_", rois[i], " - 2*cov_", rois[i], ")",
+                  " / usum_", rois[i], "\n")
   }
   mod
 }
