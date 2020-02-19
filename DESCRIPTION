@@ -12,13 +12,13 @@ LazyData: true
 Imports: 
     stringr,
     stats,
-    MASS
+    MASS,
+    corrplot
 RoxygenNote: 7.0.2
 Suggests: 
     testthat (>= 2.1.0),
     knitr,
-    rmarkdown,
-    corrplot
+    rmarkdown
 Depends: 
     lavaan (>= 0.6.4),
     R (>= 3.5.0)
