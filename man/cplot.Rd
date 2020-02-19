@@ -16,5 +16,5 @@ displayed.}
 This function is a wrapper around corrplot
 }
 \seealso{
-\code{\link{corrplot::corrplot()}}
+\code{\link[corrplot]{corrplot}}
 }

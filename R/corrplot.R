@@ -5,7 +5,7 @@
 #' @param mat <matrix> or <list<matrix>> the matrix or list of matrices to be
 #'            displayed.
 #' @param ... other arguments passed to corrplot::corrplot()
-#' @seealso \code{\link{corrplot::corrplot()}}
+#' @seealso \code{\link[corrplot]{corrplot}}
 #'
 #' @importFrom corrplot corrplot
 #'
