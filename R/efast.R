@@ -1,3 +1,82 @@
+#' Estimate an EFAST model
+#'
+#' This function estimates efa models with residual covariance.
+#'
+#' @param data <data.frame> the dataset
+#' @param M <numeric> How many factors, minimum 2
+#' @param res_struct <list> residual structure (see details)
+#' @param auto.fix.first <bool> see lavaan
+#' @param auto.var <bool> see lavaan
+#' @param auto.efa <bool> see lavaan
+#' @param information <character> see lavaan
+#' @param std.ov <bool> see lavaan
+#' @param ... other arguments passed to lavaan
+#'
+#' @details
+#'
+#' @examples
+#' \dontrun{
+#' # Use a lavaan test dataset
+#' test_data <- lavaan::HolzingerSwineford1939[,7:15]
+#'
+#' # create an EFA model
+#' test_efa <- efast(test_data, 3)
+#'
+#' # create a (simple) residual structure
+#' res_struct <- list(
+#'   c("x4", "x7"),
+#'   c("x5", "x9")
+#' )
+#'
+#' # create an efast model
+#' test_efast <- efast(test_data, 3, res_struct)
+#'
+#' compare the models
+#' lavaan::lavTestLRT(test_efa, test_efast)
+#' }
+#'
+#' @importFrom lavaan lavaan summary
+#'
+#' @export
+efast <- function(data, M, rstruct, auto.fix.first = FALSE, auto.var = TRUE,
+                  auto.efa = TRUE, information = "observed",
+                  std.ov = TRUE, ...) {
+  if (!is.data.frame(data))
+    stop("data argument should be a data.frame")
+  if (!is.numeric(M) || M < 2)
+    stop("We need at least 2 factors (M) for EFA.")
+
+  if (missing(rstruct) || is.null(rstruct) || length(rstruct) == 0) {
+    cat("No residual structure specified, performing an EFA.\n")
+    res <- efast_efa(data, M, auto.fix.first = auto.fix.first,
+                     auto.var = auto.var, auto.efa = auto.efa,
+                     information = information, std.ov = std.ov, ...)
+    return(res)
+  }
+
+
+  # generate the model syntax
+  efa_mod <- efa_model(data, M)
+  str_mod <- str_model(data, rstruct)
+  model   <- paste(efa_mod, str_mod, sep = "\n")
+
+  # fit the model
+  res <- lavaan(
+    model          = model,
+    data           = data,
+    auto.fix.first = auto.fix.first,
+    auto.var       = auto.var,
+    auto.efa       = auto.efa,
+    information    = information,
+    std.ov         = std.ov,
+    ...
+  )
+  res@external$type   <- "EFAST"
+  res@external$syntax <- model
+  res
+}
+
+
 #' Estimate an EFAST-hemi model
 #'
 #' This function estimates efast models with covariance due to hemispheric
@@ -70,7 +149,7 @@ efast_hemi <- function(data, M, lh_idx, rh_idx, roi_names, constrain = FALSE,
     std.ov         = std.ov,
     ...
   )
-  res@external$type   <- "EFAST_hemi"
+  res@external$type   <- "EFAST_HEMI"
   res@external$syntax <- model
   res
 }
@@ -122,7 +201,7 @@ efast_efa <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
     std.ov         = std.ov,
     ...
   )
-  res@external$type   <- "EFA"
+  res@external$type   <- "EFAST_EFA"
   res@external$syntax <- efa_mod
   res
 }

@@ -1,4 +1,3 @@
-
 #' model_syntax
 #' @rdname model_syntax
 #' @keywords internal
@@ -23,6 +22,34 @@ efa_model <- function(dat, M = 3) {
                   " + v_", p, "*", nm_p, "\n")
   }
   return(mod)
+}
+
+#' str_model
+#' @rdname model_syntax
+#' @keywords internal
+str_model <- function(dat, rstruct) {
+  # first, check if any of rstruct are not in names(dat)
+  datanames <- names(dat)
+  rstrnames <- unique(unlist(rstruct))
+  # get names in rstruct which are not in the dataset
+  errnames <- setdiff(rstrnames, intersect(datanames, rstrnames))
+  if (length(errnames) > 0) stop(
+    "There are variables in the specified residual structure (rstruct) ",
+    "which do not occur in the dataset. \nNames: ",
+    paste(errnames, collapse = ", ")
+  )
+
+  rescovs <- vapply(
+    X         = rstruct,
+    FUN       = paste,
+    FUN.VALUE = "lhs ~~ rhs",
+    collapse  = " ~~ "
+  )
+  mod <- paste0(
+    "# Residual structure\n# ------------------\n",
+    paste(rescovs, collapse = "\n")
+  )
+  mod
 }
 
 #' hemi_model
