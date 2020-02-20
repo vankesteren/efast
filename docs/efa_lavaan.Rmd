@@ -60,7 +60,7 @@ loadings(efa_psych)
 The EFAST package implements this exact pattern, and allows for extracting the loadings similar to the `psych` package:
 
 ```{r efaefast}
-efa_efast <- efa_esem(data = HolzingerSwineford1939[, 7:15], M = 3)
+efa_efast <- efast_efa(data = HolzingerSwineford1939[, 7:15], M = 3)
 efast_loadings(efa_efast)
 ``` 
 

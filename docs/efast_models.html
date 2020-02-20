@@ -1652,7 +1652,7 @@ div.tocify {
 ##               0.610               0.228               7.346</code></pre>
 <p>For example, we can see in the RMSEA value of 0.0399566 that the model fit is quite good – the model approximates the elements of the observed covariance matrix well. Additionally, the fit of different models with different numbers of factors can also be investigated to determine the optimal number of factors. Another model comparison that can be made is to a model without symmetry structure. This can be done in several ways, for example through the relative fit indices such as BIC and AIC, or through likelihood ratio tests.</p>
 <p>Below we compare the EFAST model to an identically estimated EFA model with 6 factors.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>efa_fit &lt;-<span class="st"> </span><span class="kw">efa_esem</span>(<span class="dt">data =</span> roi_volume, <span class="dt">M =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>efa_fit &lt;-<span class="st"> </span><span class="kw">efast_efa</span>(<span class="dt">data =</span> roi_volume, <span class="dt">M =</span> <span class="dv">6</span>)</span></code></pre></div>
 <p>A likelihood ratio test can be performed via the <code>anova()</code> or the <code>lavTestLRT()</code> function from the <code>lavaan</code> package:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">lavTestLRT</span>(efast_fit, efa_fit)</span></code></pre></div>
 <pre><code>## Chi-Squared Difference Test

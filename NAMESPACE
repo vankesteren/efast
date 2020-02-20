@@ -2,7 +2,7 @@
 
 export(cplot)
 export(decomposition)
-export(efa_esem)
+export(efast_efa)
 export(efast_hemi)
 export(efast_loadings)
 export(is_efa)

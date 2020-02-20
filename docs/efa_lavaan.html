@@ -558,7 +558,7 @@ summary {
 ## Proportion Var 0.243 0.144 0.136
 ## Cumulative Var 0.243 0.387 0.523</code></pre>
 <p>The EFAST package implements this exact pattern, and allows for extracting the loadings similar to the <code>psych</code> package:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>efa_efast &lt;-<span class="st"> </span><span class="kw">efa_esem</span>(<span class="dt">data =</span> HolzingerSwineford1939[, <span class="dv">7</span><span class="op">:</span><span class="dv">15</span>], <span class="dt">M =</span> <span class="dv">3</span>)</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>efa_efast &lt;-<span class="st"> </span><span class="kw">efast_efa</span>(<span class="dt">data =</span> HolzingerSwineford1939[, <span class="dv">7</span><span class="op">:</span><span class="dv">15</span>], <span class="dt">M =</span> <span class="dv">3</span>)</span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="kw">efast_loadings</span>(efa_efast)</span></code></pre></div>
 <pre><code>## 
 ## Loadings:

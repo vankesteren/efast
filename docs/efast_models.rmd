@@ -73,7 +73,7 @@ For example, we can see in the RMSEA value of `r fitmeasures(efast_fit)["rmsea"]
 Below we compare the EFAST model to an identically estimated EFA model with 6 factors.
 
 ```{r efafit, eval = FALSE}
-efa_fit <- efa_esem(data = roi_volume, M = 6)
+efa_fit <- efast_efa(data = roi_volume, M = 6)
 ```
 ```{r efa_true, include=FALSE}
 efa_fit <- readRDS("efa_fit.rds")

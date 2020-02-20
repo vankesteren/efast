@@ -97,14 +97,14 @@ efast_hemi <- function(data, M, lh_idx, rh_idx, roi_names, constrain = FALSE,
 #' \dontrun{
 #' # create a test dataset
 #' test_data <- simulate_efast()
-#' fit_efa <- efa_esem(simdat, M = 4)
+#' fit_efa <- efast_efa(simdat, M = 4)
 #' summary(fit_efa)
 #' }
 #'
 #' @importFrom lavaan lavaan
 #'
 #' @export
-efa_esem <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
+efast_efa <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
                      auto.efa = TRUE, information = "observed", std.ov = TRUE,
                      ...) {
   if (!is.data.frame(data))
