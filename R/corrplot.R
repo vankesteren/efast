@@ -15,5 +15,6 @@ cplot <- function(mat, ...) {
     for (i in seq_along(mat)) cplot(mat[[i]], ...)
     return(invisible())
   }
-  corrplot(mat, tl.pos = "n", cl.pos = "n", method = "shade", ...)
+  corrplot(mat, tl.pos = "n", cl.pos = "n", method = "square",
+           addgrid.col = FALSE, ...)
 }
