@@ -17,7 +17,6 @@ library(corrplot)
 library(GPArotation)
 options(width = 70)
 set.seed(45)
-efa_fit <- readRDS("efa_fit.rds")
 ```
 
 The `lavaan`[^lavaan] syntax since version `0.6.4` allows for exploratory blocks for latent variables. The EFAST package builds on this functionality to combine exploratory latent variable models (such as EFA) with structural parameters (in EFAST the residual covariance structure). Here is how to create a basic 3-factor EFA model in `lavaan` using the `x1 - x9` variables from the famous Holzinger and Swineford data included in the `lavaan` package:
