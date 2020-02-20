@@ -44,7 +44,9 @@ efast <- function(data, M, rstruct, auto.fix.first = FALSE, auto.var = TRUE,
                   auto.efa = TRUE, information = "observed",
                   std.ov = TRUE, ...) {
   if (!is.data.frame(data))
-    stop("data argument should be a data.frame")
+    stop("Data argument should be a data.frame.")
+  if (!all(apply(data, 2, is.numeric)))
+    stop("Data should contain only numeric variables.")
   if (!is.numeric(M) || M < 2)
     stop("We need at least 2 factors (M) for EFA.")
 
@@ -190,6 +192,8 @@ efast_efa <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
                      ...) {
   if (!is.data.frame(data))
     stop("data argument should be a data.frame")
+  if (!all(apply(data, 2, is.numeric)))
+    stop("Data should contain only numeric variables.")
   if (!is.numeric(M) || M < 2)
     stop("We need at least 2 factors (M) for EFA.")
   efa_mod  <- efa_model(data, M)

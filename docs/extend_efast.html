@@ -444,23 +444,116 @@ summary {
 
 
 <p><a href="../efast">Go back</a></p>
-<p>The <code>lavaan</code> syntax of the EFAST model is available as a component of the fitted model (<code>fit@external$syntax</code>). This means that any EFAST model can be easily extended with further variables, such as predicting participant phenotype on the basis of the factors. This extension would amount to adding the following line to the current example model syntax:</p>
+<p>A wider array of residual structures is available using the more general <code>efast()</code> function. Just as in the hemisphere models, the residual structure in the general function is represented as residual covariances between the observed variables. For example, we can use the Holzinger &amp; Swineford (1939) data to run an exploratory factor analysis with residual covariances between the x4 and x7 variables and the x5 and x9 variables:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>res_struct &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb1-2"><a href="#cb1-2"></a> <span class="kw">c</span>(<span class="st">&quot;x4&quot;</span>, <span class="st">&quot;x7&quot;</span>),</span>
+<span id="cb1-3"><a href="#cb1-3"></a> <span class="kw">c</span>(<span class="st">&quot;x5&quot;</span>, <span class="st">&quot;x9&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>fit &lt;-<span class="st"> </span><span class="kw">efast</span>(</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="dt">data    =</span> lavaan<span class="op">::</span>HolzingerSwineford1939[,<span class="dv">7</span><span class="op">:</span><span class="dv">15</span>], </span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="dt">M       =</span> <span class="dv">3</span>, </span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="dt">rstruct =</span> res_struct</span>
+<span id="cb1-9"><a href="#cb1-9"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">summary</span>(fit)</span></code></pre></div>
+<pre><code>## lavaan 0.6-5 ended normally after 51 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         38
+##   Number of equality constraints                     3
+##   Row rank of the constraints matrix                 3
+##                                                       
+##   Rotation method                       GEOMIN OBLIQUE
+##   Geomin epsilon                                  0.01
+##   Rotation algorithm (rstarts)               GPA (100)
+##   Standardized metric                            FALSE
+##   Row weights                                     None
+##                                                       
+##   Number of observations                           301
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 9.073
+##   Degrees of freedom                                10
+##   P-value (Chi-square)                           0.525
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Observed
+##   Observed information based on                Hessian
+##   Standard errors                             Standard
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##   F1 =~ efa1                                          
+##     x1                0.613    0.074    8.312    0.000
+##     x2                0.486    0.076    6.430    0.000
+##     x3                0.680    0.073    9.298    0.000
+##     x4                0.048    0.030    1.627    0.104
+##     x5               -0.103    0.043   -2.392    0.017
+##     x6                0.062    0.039    1.584    0.113
+##     x7               -0.116    0.084   -1.377    0.169
+##     x8                0.124    0.122    1.016    0.310
+##     x9                0.405    0.105    3.855    0.000
+##   F2 =~ efa1                                          
+##     x1                0.188    0.067    2.808    0.005
+##     x2                0.046    0.053    0.869    0.385
+##     x3               -0.069    0.054   -1.276    0.202
+##     x4                0.835    0.051   16.240    0.000
+##     x5                0.904    0.052   17.243    0.000
+##     x6                0.803    0.051   15.705    0.000
+##     x7                0.016    0.034    0.479    0.632
+##     x8               -0.014    0.039   -0.350    0.726
+##     x9                0.013    0.034    0.393    0.694
+##   F3 =~ efa1                                          
+##     x1                0.021    0.038    0.551    0.582
+##     x2               -0.108    0.070   -1.553    0.121
+##     x3                0.021    0.043    0.473    0.636
+##     x4               -0.041    0.041   -1.006    0.314
+##     x5                0.023    0.027    0.826    0.409
+##     x6                0.016    0.035    0.476    0.634
+##     x7                0.723    0.069   10.457    0.000
+##     x8                0.692    0.094    7.379    0.000
+##     x9                0.449    0.076    5.933    0.000
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##  .x4 ~~                                               
+##    .x7                0.106    0.037    2.883    0.004
+##  .x5 ~~                                               
+##    .x9                0.056    0.033    1.712    0.087
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .x1       (v_1)    0.500    0.063    7.879       NA
+##    .x2       (v_2)    0.759    0.073   10.348       NA
+##    .x3       (v_3)    0.555    0.075    7.426       NA
+##    .x4       (v_4)    0.282    0.035    7.965       NA
+##    .x5       (v_5)    0.224    0.038    5.904       NA
+##    .x6       (v_6)    0.309    0.035    8.745       NA
+##    .x7       (v_7)    0.498    0.095    5.234       NA
+##    .x8       (v_8)    0.465    0.079    5.881       NA
+##    .x9       (v_9)    0.538    0.059    9.073       NA
+##     F1                1.000                           
+##     F2                1.000                           
+##     F3                1.000</code></pre>
+<p>The <code>lavaan</code> syntax of any model from the <code>efast</code> package is available as a component of the fitted model (<code>fit@external$syntax</code>). This means that any EFAST model can be easily extended with further variables. An example in the case of the hemisphere model from the previous tutorials could be predicting participant phenotype on the basis of the estimated factors. This extension would amount to adding the following line to the current example model syntax:</p>
 <pre><code>phenotype_variable ~ F1 + F2 + F3 + F4 + F5 + F6</code></pre>
 <p>The extended model can then be fitted by a call to the fitting function from the <code>lavaan</code> package:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">lavaan</span>(</span>
-<span id="cb2-2"><a href="#cb2-2"></a>  <span class="dt">model          =</span> extended_model, </span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">data           =</span> raw_data, </span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="dt">auto.fix.first =</span> <span class="ot">FALSE</span>, </span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="dt">auto.var       =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="dt">auto.efa       =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="dt">information    =</span> <span class="st">&quot;observed&quot;</span>, </span>
-<span id="cb2-8"><a href="#cb2-8"></a>  <span class="dt">std.ov         =</span> <span class="ot">TRUE</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">lavaan</span>(</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="dt">model          =</span> extended_model, </span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">data           =</span> raw_data, </span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="dt">auto.fix.first =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="dt">auto.var       =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="dt">auto.efa       =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="dt">information    =</span> <span class="st">&quot;observed&quot;</span>, </span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="dt">std.ov         =</span> <span class="ot">TRUE</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>)</span></code></pre></div>
 <p>By adding this extension, <code>lavaan</code> will in one step find those factors that best explain the covariance between brain regions and the phenotype of interest, reasonably similar to the idea of PLS regression. In this way, the EFAST model can serve as a starting point for an ESEM with structural parameters.</p>
 <div id="full-syntax" class="section level1">
 <h1>Full syntax</h1>
-<p>Below is the full syntax for the the fitted EFAST model from this tutorial, with 6 latent factors and a symmetry structure. Within this syntax, additional constraints are added to aid in convergence of the parameters.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">cat</span>(efast_fit<span class="op">@</span>external<span class="op">$</span>syntax)</span></code></pre></div>
+<p>Below is the full syntax for the the fitted EFAST model on the brain imaging data from both hemispheres, with 6 latent factors and a symmetry structure. Within this syntax, the <code>efast</code> package adds additional constraints to aid in convergence of the parameters. In addition, syntax is added for the lateralization indices.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">cat</span>(efast_hemi_fit<span class="op">@</span>external<span class="op">$</span>syntax)</span></code></pre></div>
 <pre><code>## # Exploratory factor model
 ## # ------------------------
 ##  efa(&#39;efa1&#39;)*F1 +
