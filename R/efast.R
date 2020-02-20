@@ -4,7 +4,7 @@
 #'
 #' @param data <data.frame> the dataset
 #' @param M <numeric> How many factors, minimum 2
-#' @param res_struct <list> residual structure (see details)
+#' @param rstruct <list> residual structure (see details)
 #' @param auto.fix.first <bool> see lavaan
 #' @param auto.var <bool> see lavaan
 #' @param auto.efa <bool> see lavaan
@@ -12,7 +12,9 @@
 #' @param std.ov <bool> see lavaan
 #' @param ... other arguments passed to lavaan
 #'
-#' @details
+#' @details Residual structure (in the form of residual covariances) can be
+#' added to the EFA through a list of pairs of variable names. See the example
+#' for more information.
 #'
 #' @examples
 #' \dontrun{

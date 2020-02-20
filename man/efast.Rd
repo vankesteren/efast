@@ -21,6 +21,8 @@ efast(
 
 \item{M}{<numeric> How many factors, minimum 2}
 
+\item{rstruct}{<list> residual structure (see details)}
+
 \item{auto.fix.first}{<bool> see lavaan}
 
 \item{auto.var}{<bool> see lavaan}
@@ -32,14 +34,14 @@ efast(
 \item{std.ov}{<bool> see lavaan}
 
 \item{...}{other arguments passed to lavaan}
-
-\item{res_struct}{<list> residual structure (see details)}
 }
 \description{
 This function estimates efa models with residual covariance.
 }
 \details{
-
+Residual structure (in the form of residual covariances) can be
+added to the EFA through a list of pairs of variable names. See the example
+for more information.
 }
 \examples{
 \dontrun{
