@@ -486,35 +486,35 @@ summary {
 ## Latent Variables:
 ##                    Estimate  Std.Err  z-value  P(&gt;|z|)
 ##   F1 =~ efa1                                          
-##     x1                0.613    0.074    8.312    0.000
+##     x1                0.613    0.074    8.313    0.000
 ##     x2                0.486    0.076    6.430    0.000
-##     x3                0.680    0.073    9.298    0.000
-##     x4                0.048    0.030    1.627    0.104
-##     x5               -0.103    0.043   -2.392    0.017
-##     x6                0.062    0.039    1.584    0.113
-##     x7               -0.116    0.084   -1.377    0.169
-##     x8                0.124    0.122    1.016    0.310
-##     x9                0.405    0.105    3.855    0.000
+##     x3                0.680    0.073    9.300    0.000
+##     x4                0.048    0.030    1.626    0.104
+##     x5               -0.103    0.043   -2.391    0.017
+##     x6                0.062    0.039    1.583    0.113
+##     x7               -0.116    0.084   -1.379    0.168
+##     x8                0.124    0.122    1.017    0.309
+##     x9                0.405    0.105    3.858    0.000
 ##   F2 =~ efa1                                          
-##     x1                0.188    0.067    2.808    0.005
-##     x2                0.046    0.053    0.869    0.385
+##     x1                0.188    0.067    2.809    0.005
+##     x2                0.046    0.053    0.868    0.385
 ##     x3               -0.069    0.054   -1.276    0.202
-##     x4                0.835    0.051   16.240    0.000
-##     x5                0.904    0.052   17.243    0.000
+##     x4                0.835    0.051   16.241    0.000
+##     x5                0.904    0.052   17.242    0.000
 ##     x6                0.803    0.051   15.705    0.000
-##     x7                0.016    0.034    0.479    0.632
+##     x7                0.016    0.034    0.480    0.631
 ##     x8               -0.014    0.039   -0.350    0.726
 ##     x9                0.013    0.034    0.393    0.694
 ##   F3 =~ efa1                                          
-##     x1                0.021    0.038    0.551    0.582
-##     x2               -0.108    0.070   -1.553    0.121
+##     x1                0.021    0.038    0.552    0.581
+##     x2               -0.108    0.070   -1.552    0.121
 ##     x3                0.021    0.043    0.473    0.636
 ##     x4               -0.041    0.041   -1.006    0.314
 ##     x5                0.023    0.027    0.826    0.409
-##     x6                0.016    0.035    0.476    0.634
-##     x7                0.723    0.069   10.457    0.000
-##     x8                0.692    0.094    7.379    0.000
-##     x9                0.449    0.076    5.933    0.000
+##     x6                0.016    0.035    0.475    0.635
+##     x7                0.723    0.069   10.459    0.000
+##     x8                0.692    0.094    7.380    0.000
+##     x9                0.449    0.076    5.934    0.000
 ## 
 ## Covariances:
 ##                    Estimate  Std.Err  z-value  P(&gt;|z|)
@@ -674,73 +674,73 @@ summary {
 ## # Lateralization index code
 ## # -----------------------------------
 ## usum_ROI1 := v_1 + v_35
-## LI_ROI1 := (usum_ROI1 - 2*cov_ROI1) / usum_ROI1
+## LI_ROI1 := (usum_ROI1 - 2*abs(cov_ROI1)) / usum_ROI1
 ## usum_ROI2 := v_2 + v_36
-## LI_ROI2 := (usum_ROI2 - 2*cov_ROI2) / usum_ROI2
+## LI_ROI2 := (usum_ROI2 - 2*abs(cov_ROI2)) / usum_ROI2
 ## usum_ROI3 := v_3 + v_37
-## LI_ROI3 := (usum_ROI3 - 2*cov_ROI3) / usum_ROI3
+## LI_ROI3 := (usum_ROI3 - 2*abs(cov_ROI3)) / usum_ROI3
 ## usum_ROI4 := v_4 + v_38
-## LI_ROI4 := (usum_ROI4 - 2*cov_ROI4) / usum_ROI4
+## LI_ROI4 := (usum_ROI4 - 2*abs(cov_ROI4)) / usum_ROI4
 ## usum_ROI5 := v_5 + v_39
-## LI_ROI5 := (usum_ROI5 - 2*cov_ROI5) / usum_ROI5
+## LI_ROI5 := (usum_ROI5 - 2*abs(cov_ROI5)) / usum_ROI5
 ## usum_ROI6 := v_6 + v_40
-## LI_ROI6 := (usum_ROI6 - 2*cov_ROI6) / usum_ROI6
+## LI_ROI6 := (usum_ROI6 - 2*abs(cov_ROI6)) / usum_ROI6
 ## usum_ROI7 := v_7 + v_41
-## LI_ROI7 := (usum_ROI7 - 2*cov_ROI7) / usum_ROI7
+## LI_ROI7 := (usum_ROI7 - 2*abs(cov_ROI7)) / usum_ROI7
 ## usum_ROI8 := v_8 + v_42
-## LI_ROI8 := (usum_ROI8 - 2*cov_ROI8) / usum_ROI8
+## LI_ROI8 := (usum_ROI8 - 2*abs(cov_ROI8)) / usum_ROI8
 ## usum_ROI9 := v_9 + v_43
-## LI_ROI9 := (usum_ROI9 - 2*cov_ROI9) / usum_ROI9
+## LI_ROI9 := (usum_ROI9 - 2*abs(cov_ROI9)) / usum_ROI9
 ## usum_ROI10 := v_10 + v_44
-## LI_ROI10 := (usum_ROI10 - 2*cov_ROI10) / usum_ROI10
+## LI_ROI10 := (usum_ROI10 - 2*abs(cov_ROI10)) / usum_ROI10
 ## usum_ROI11 := v_11 + v_45
-## LI_ROI11 := (usum_ROI11 - 2*cov_ROI11) / usum_ROI11
+## LI_ROI11 := (usum_ROI11 - 2*abs(cov_ROI11)) / usum_ROI11
 ## usum_ROI12 := v_12 + v_46
-## LI_ROI12 := (usum_ROI12 - 2*cov_ROI12) / usum_ROI12
+## LI_ROI12 := (usum_ROI12 - 2*abs(cov_ROI12)) / usum_ROI12
 ## usum_ROI13 := v_13 + v_47
-## LI_ROI13 := (usum_ROI13 - 2*cov_ROI13) / usum_ROI13
+## LI_ROI13 := (usum_ROI13 - 2*abs(cov_ROI13)) / usum_ROI13
 ## usum_ROI14 := v_14 + v_48
-## LI_ROI14 := (usum_ROI14 - 2*cov_ROI14) / usum_ROI14
+## LI_ROI14 := (usum_ROI14 - 2*abs(cov_ROI14)) / usum_ROI14
 ## usum_ROI15 := v_15 + v_49
-## LI_ROI15 := (usum_ROI15 - 2*cov_ROI15) / usum_ROI15
+## LI_ROI15 := (usum_ROI15 - 2*abs(cov_ROI15)) / usum_ROI15
 ## usum_ROI16 := v_16 + v_50
-## LI_ROI16 := (usum_ROI16 - 2*cov_ROI16) / usum_ROI16
+## LI_ROI16 := (usum_ROI16 - 2*abs(cov_ROI16)) / usum_ROI16
 ## usum_ROI17 := v_17 + v_51
-## LI_ROI17 := (usum_ROI17 - 2*cov_ROI17) / usum_ROI17
+## LI_ROI17 := (usum_ROI17 - 2*abs(cov_ROI17)) / usum_ROI17
 ## usum_ROI18 := v_18 + v_52
-## LI_ROI18 := (usum_ROI18 - 2*cov_ROI18) / usum_ROI18
+## LI_ROI18 := (usum_ROI18 - 2*abs(cov_ROI18)) / usum_ROI18
 ## usum_ROI19 := v_19 + v_53
-## LI_ROI19 := (usum_ROI19 - 2*cov_ROI19) / usum_ROI19
+## LI_ROI19 := (usum_ROI19 - 2*abs(cov_ROI19)) / usum_ROI19
 ## usum_ROI20 := v_20 + v_54
-## LI_ROI20 := (usum_ROI20 - 2*cov_ROI20) / usum_ROI20
+## LI_ROI20 := (usum_ROI20 - 2*abs(cov_ROI20)) / usum_ROI20
 ## usum_ROI21 := v_21 + v_55
-## LI_ROI21 := (usum_ROI21 - 2*cov_ROI21) / usum_ROI21
+## LI_ROI21 := (usum_ROI21 - 2*abs(cov_ROI21)) / usum_ROI21
 ## usum_ROI22 := v_22 + v_56
-## LI_ROI22 := (usum_ROI22 - 2*cov_ROI22) / usum_ROI22
+## LI_ROI22 := (usum_ROI22 - 2*abs(cov_ROI22)) / usum_ROI22
 ## usum_ROI23 := v_23 + v_57
-## LI_ROI23 := (usum_ROI23 - 2*cov_ROI23) / usum_ROI23
+## LI_ROI23 := (usum_ROI23 - 2*abs(cov_ROI23)) / usum_ROI23
 ## usum_ROI24 := v_24 + v_58
-## LI_ROI24 := (usum_ROI24 - 2*cov_ROI24) / usum_ROI24
+## LI_ROI24 := (usum_ROI24 - 2*abs(cov_ROI24)) / usum_ROI24
 ## usum_ROI25 := v_25 + v_59
-## LI_ROI25 := (usum_ROI25 - 2*cov_ROI25) / usum_ROI25
+## LI_ROI25 := (usum_ROI25 - 2*abs(cov_ROI25)) / usum_ROI25
 ## usum_ROI26 := v_26 + v_60
-## LI_ROI26 := (usum_ROI26 - 2*cov_ROI26) / usum_ROI26
+## LI_ROI26 := (usum_ROI26 - 2*abs(cov_ROI26)) / usum_ROI26
 ## usum_ROI27 := v_27 + v_61
-## LI_ROI27 := (usum_ROI27 - 2*cov_ROI27) / usum_ROI27
+## LI_ROI27 := (usum_ROI27 - 2*abs(cov_ROI27)) / usum_ROI27
 ## usum_ROI28 := v_28 + v_62
-## LI_ROI28 := (usum_ROI28 - 2*cov_ROI28) / usum_ROI28
+## LI_ROI28 := (usum_ROI28 - 2*abs(cov_ROI28)) / usum_ROI28
 ## usum_ROI29 := v_29 + v_63
-## LI_ROI29 := (usum_ROI29 - 2*cov_ROI29) / usum_ROI29
+## LI_ROI29 := (usum_ROI29 - 2*abs(cov_ROI29)) / usum_ROI29
 ## usum_ROI30 := v_30 + v_64
-## LI_ROI30 := (usum_ROI30 - 2*cov_ROI30) / usum_ROI30
+## LI_ROI30 := (usum_ROI30 - 2*abs(cov_ROI30)) / usum_ROI30
 ## usum_ROI31 := v_31 + v_65
-## LI_ROI31 := (usum_ROI31 - 2*cov_ROI31) / usum_ROI31
+## LI_ROI31 := (usum_ROI31 - 2*abs(cov_ROI31)) / usum_ROI31
 ## usum_ROI32 := v_32 + v_66
-## LI_ROI32 := (usum_ROI32 - 2*cov_ROI32) / usum_ROI32
+## LI_ROI32 := (usum_ROI32 - 2*abs(cov_ROI32)) / usum_ROI32
 ## usum_ROI33 := v_33 + v_67
-## LI_ROI33 := (usum_ROI33 - 2*cov_ROI33) / usum_ROI33
+## LI_ROI33 := (usum_ROI33 - 2*abs(cov_ROI33)) / usum_ROI33
 ## usum_ROI34 := v_34 + v_68
-## LI_ROI34 := (usum_ROI34 - 2*cov_ROI34) / usum_ROI34</code></pre>
+## LI_ROI34 := (usum_ROI34 - 2*abs(cov_ROI34)) / usum_ROI34</code></pre>
 </div>
 
 
