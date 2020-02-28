@@ -28,10 +28,10 @@ In this tutorial, we show how to run an exploratory factor analysis with structu
 data("roi_volume")
 ```
 
-Upon plotting the correlation matrix of this dataset, we can see that there are secondary diagonals. These indicate symmetry structure: the first 34 variables are the left-hemisphere ROIs, and the last 34 variables are their contralateral homologues. The strong secondary diagonals show that the contralateral homologues correlate strongly in their amount of volume. The correlation matrix can be plotted using the `corrplot` package[^corrplot] as follows:
+Upon plotting the correlation matrix of this dataset, we can see that there are secondary diagonals. These indicate symmetry structure: the first 34 variables are the left-hemisphere ROIs, and the last 34 variables are their contralateral homologues. The strong secondary diagonals show that the contralateral homologues correlate strongly in their amount of volume. The correlation matrix can be plotted using the `cplot()` function as follows (`cplot()` is based on the `corrplot` package[^corrplot]):
 
 ```{r corplot, fig.align='center', out.width="80%"}
-corrplot(cor(roi_volume), method = "shade", tl.pos = "n", cl.pos = "n")
+cplot(cor(roi_volume))
 ```
 
 The goal of the EFAST routine is to extract $M$ factors that explain the correlations among the ROIs as well as possible, while taking into account the symmetry. The resulting factors can then be used for further analysis, for example to compare different groups in their structural volume.
@@ -73,7 +73,7 @@ For example, we can see in the RMSEA value of `r fitmeasures(efast_fit)["rmsea"]
 Below we compare the EFAST model to an identically estimated EFA model with 6 factors.
 
 ```{r efafit, eval = FALSE}
-efa_fit <- efa_esem(data = roi_volume, M = 6)
+efa_fit <- efast_efa(data = roi_volume, M = 6)
 ```
 ```{r efa_true, include=FALSE}
 efa_fit <- readRDS("efa_fit.rds")
@@ -85,7 +85,7 @@ A likelihood ratio test can be performed via the `anova()` or the `lavTestLRT()`
 lavTestLRT(efast_fit, efa_fit)
 ```
 
-The resulting table shows that the EFAST model with 6 factors fits significantly better than the pure EFA model with 6 factors: $\chi^2$(34) = 2837.6, _p_ < .001.
+The resulting table shows that the EFAST model with 6 factors fits significantly better than the pure EFA model with 6 factors: $\chi^2$(34) = 2840.7, _p_ < .001.
 
 ## Dimension reduction
 Two relevant methods for performing dimension reduction through EFAST are `predict()` for extracting the per-participant factor values for further analysis, and the `efast_loadings()` function, for extracting and displaying the factor loadings to give an interpretation to each of the factors. The loadings can optionally be displayed in a convenient symmetric way, with the loadings of the left and right hemispheres for each ROI side-by-side (note that while this aids interpretation of the loadings themselves, such as easily showing that factor 2 is relatively assymmetric, the bottom table with the proportions of explained variance now displays wrong values):

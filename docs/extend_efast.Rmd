@@ -16,10 +16,24 @@ library(efast)
 library(corrplot)
 options(width = 70)
 data("roi_volume")
-efast_fit <- readRDS("efast_fit.rds")
+efast_hemi_fit <- readRDS("efast_fit.rds")
+```
+A wider array of residual structures is available using the more general `efast()` function. Just as in the hemisphere models, the residual structure in the general function is represented as residual covariances between the observed variables. For example, we can use the Holzinger & Swineford (1939) data to run an exploratory factor analysis with residual covariances between the x4 and x7 variables and the x5 and x9 variables:
+
+```{r}
+res_struct <- list(
+ c("x4", "x7"),
+ c("x5", "x9")
+)
+fit <- efast(
+  data    = lavaan::HolzingerSwineford1939[,7:15], 
+  M       = 3, 
+  rstruct = res_struct
+)
+summary(fit)
 ```
 
-The `lavaan` syntax of the EFAST model is available as a component of the fitted model (`fit@external$syntax`). This means that any EFAST model can be easily extended with further variables, such as predicting participant phenotype on the basis of the factors. This extension would amount to adding the following line to the current example model syntax:
+The `lavaan` syntax of any model from the `efast` package is available as a component of the fitted model (`fit@external$syntax`). This means that any EFAST model can be easily extended with further variables. An example in the case of the hemisphere model from the previous tutorials could be predicting participant phenotype on the basis of the estimated factors. This extension would amount to adding the following line to the current example model syntax:
 ```
 phenotype_variable ~ F1 + F2 + F3 + F4 + F5 + F6
 ```
@@ -39,8 +53,8 @@ By adding this extension, `lavaan` will in one step find those factors that best
 
 # Full syntax
 
-Below is the full syntax for the the fitted EFAST model from this tutorial, with 6 latent factors and a symmetry structure. Within this syntax, additional constraints are added to aid in convergence of the parameters.
+Below is the full syntax for the the fitted EFAST model on the brain imaging data from both hemispheres, with 6 latent factors and a symmetry structure. Within this syntax, the `efast` package adds additional constraints to aid in convergence of the parameters. In addition, syntax is added for the lateralization indices.
 
 ```{r extend}
-cat(efast_fit@external$syntax)
+cat(efast_hemi_fit@external$syntax)
 ```

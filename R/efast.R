@@ -1,3 +1,86 @@
+#' Estimate an EFAST model
+#'
+#' This function estimates efa models with residual covariance.
+#'
+#' @param data <data.frame> the dataset
+#' @param M <numeric> How many factors, minimum 2
+#' @param rstruct <list> residual structure (see details)
+#' @param auto.fix.first <bool> see lavaan
+#' @param auto.var <bool> see lavaan
+#' @param auto.efa <bool> see lavaan
+#' @param information <character> see lavaan
+#' @param std.ov <bool> see lavaan
+#' @param ... other arguments passed to lavaan
+#'
+#' @details Residual structure (in the form of residual covariances) can be
+#' added to the EFA through a list of pairs of variable names. See the example
+#' for more information.
+#'
+#' @examples
+#' \dontrun{
+#' # Use a lavaan test dataset
+#' test_data <- lavaan::HolzingerSwineford1939[,7:15]
+#'
+#' # create an EFA model
+#' test_efa <- efast(test_data, 3)
+#'
+#' # create a (simple) residual structure
+#' res_struct <- list(
+#'   c("x4", "x7"),
+#'   c("x5", "x9")
+#' )
+#'
+#' # create an efast model
+#' test_efast <- efast(test_data, 3, res_struct)
+#'
+#' compare the models
+#' lavaan::lavTestLRT(test_efa, test_efast)
+#' }
+#'
+#' @importFrom lavaan lavaan summary
+#'
+#' @export
+efast <- function(data, M, rstruct, auto.fix.first = FALSE, auto.var = TRUE,
+                  auto.efa = TRUE, information = "observed",
+                  std.ov = TRUE, ...) {
+  if (!is.data.frame(data))
+    stop("Data argument should be a data.frame.")
+  if (!all(apply(data, 2, is.numeric)))
+    stop("Data should contain only numeric variables.")
+  if (!is.numeric(M) || M < 2)
+    stop("We need at least 2 factors (M) for EFA.")
+
+  if (missing(rstruct) || is.null(rstruct) || length(rstruct) == 0) {
+    cat("No residual structure specified, performing an EFA.\n")
+    res <- efast_efa(data, M, auto.fix.first = auto.fix.first,
+                     auto.var = auto.var, auto.efa = auto.efa,
+                     information = information, std.ov = std.ov, ...)
+    return(res)
+  }
+
+
+  # generate the model syntax
+  efa_mod <- efa_model(data, M)
+  str_mod <- str_model(data, rstruct)
+  model   <- paste(efa_mod, str_mod, sep = "\n")
+
+  # fit the model
+  res <- lavaan(
+    model          = model,
+    data           = data,
+    auto.fix.first = auto.fix.first,
+    auto.var       = auto.var,
+    auto.efa       = auto.efa,
+    information    = information,
+    std.ov         = std.ov,
+    ...
+  )
+  res@external$type   <- "EFAST"
+  res@external$syntax <- model
+  res
+}
+
+
 #' Estimate an EFAST-hemi model
 #'
 #' This function estimates efast models with covariance due to hemispheric
@@ -70,7 +153,7 @@ efast_hemi <- function(data, M, lh_idx, rh_idx, roi_names, constrain = FALSE,
     std.ov         = std.ov,
     ...
   )
-  res@external$type   <- "EFAST_hemi"
+  res@external$type   <- "EFAST_HEMI"
   res@external$syntax <- model
   res
 }
@@ -97,18 +180,20 @@ efast_hemi <- function(data, M, lh_idx, rh_idx, roi_names, constrain = FALSE,
 #' \dontrun{
 #' # create a test dataset
 #' test_data <- simulate_efast()
-#' fit_efa <- efa_esem(simdat, M = 4)
+#' fit_efa <- efast_efa(simdat, M = 4)
 #' summary(fit_efa)
 #' }
 #'
 #' @importFrom lavaan lavaan
 #'
 #' @export
-efa_esem <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
+efast_efa <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
                      auto.efa = TRUE, information = "observed", std.ov = TRUE,
                      ...) {
   if (!is.data.frame(data))
     stop("data argument should be a data.frame")
+  if (!all(apply(data, 2, is.numeric)))
+    stop("Data should contain only numeric variables.")
   if (!is.numeric(M) || M < 2)
     stop("We need at least 2 factors (M) for EFA.")
   efa_mod  <- efa_model(data, M)
@@ -122,7 +207,7 @@ efa_esem <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
     std.ov         = std.ov,
     ...
   )
-  res@external$type   <- "EFA"
+  res@external$type   <- "EFAST_EFA"
   res@external$syntax <- efa_mod
   res
 }
@@ -142,69 +227,3 @@ efa_esem <- function(data, M, auto.fix.first = FALSE, auto.var = TRUE,
 #' @format A data frame with 647 rows and 68 columns
 NULL
 
-#' model_syntax
-#' @rdname model_syntax
-#' @keywords internal
-efa_model <- function(dat, M = 3) {
-  # input: dataset
-  # output: efa model with M factors
-  nm <- colnames(dat)
-  mod <- paste(
-    "# Exploratory factor model\n# ------------------------\n",
-    paste0("efa('efa1')*F", 1:M, collapse = " +\n"),
-    "=~",
-    paste(nm, collapse = " + ")
-  )
-  # put relaxed constraints on the residual variances
-  mod <- paste0(mod, "\n\n# Uniqueness constraints\n# ----------------------\n")
-  for (p in 1:ncol(dat)) {
-    var_p <- stats::var(dat[,p])
-    nm_p  <- nm[p]
-    mod <- paste0(mod, nm_p, " ~~ v_", p, "*", nm_p, "\n",
-                  "v_", p, " > ", -var_p * 0.05, "\n",
-                  "v_", p, " < ",  var_p * 1.05, "\n")
-  }
-  return(mod)
-}
-
-#' hemi_model
-#' @rdname model_syntax
-#' @keywords internal
-hemi_model  <- function(rois, var_const = FALSE) {
-  # input: roi names
-  # output: lavaan structure model
-  mod <- "# Hemisphere model\n# ----------------\n"
-  for (roi in rois) {
-    mod <- paste0(mod, roi, " =~ 1*lh_", roi, " + 1*rh_", roi, "\n")
-  }
-  mod <- paste0(mod, "\n# Hemisphere covariances\n# ----------------------\n")
-  for (roi in rois) {
-    if (var_const) {
-      mod <- paste0(mod, roi, " ~~ cov_lat*", roi, "\n")
-      mod <- paste0(mod, "cov_lat > 0\n")
-    } else {
-      mod <- paste0(mod, roi, " ~~ cov_", roi, "*", roi, "\n")
-      mod <- paste0(mod, "cov_", roi, " > 0\n")
-    }
-  }
-
-  mod
-}
-
-#' lat_index stuff
-#' @rdname model_syntax
-#' @keywords internal
-lat_index <- function(rois) {
-  # input: roi names
-  # output: lateralisation index per region code
-  nroi <- length(rois)
-
-  mod <- "# Lateralization index code\n# -----------------------------------\n"
-
-  for (i in 1:nroi) {
-    mod <- paste0(mod, "usum_", rois[i], " := v_", i, " + v_", i + nroi, "\n")
-    mod <- paste0(mod, "LI_", rois[i], " := usum_", rois[i],
-                  " / (usum_", rois[i], " + 2*cov_", rois[i], ")\n")
-  }
-  mod
-}

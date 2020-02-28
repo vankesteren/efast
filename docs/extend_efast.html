@@ -444,23 +444,116 @@ summary {
 
 
 <p><a href="../efast">Go back</a></p>
-<p>The <code>lavaan</code> syntax of the EFAST model is available as a component of the fitted model (<code>fit@external$syntax</code>). This means that any EFAST model can be easily extended with further variables, such as predicting participant phenotype on the basis of the factors. This extension would amount to adding the following line to the current example model syntax:</p>
+<p>A wider array of residual structures is available using the more general <code>efast()</code> function. Just as in the hemisphere models, the residual structure in the general function is represented as residual covariances between the observed variables. For example, we can use the Holzinger &amp; Swineford (1939) data to run an exploratory factor analysis with residual covariances between the x4 and x7 variables and the x5 and x9 variables:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>res_struct &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb1-2"><a href="#cb1-2"></a> <span class="kw">c</span>(<span class="st">&quot;x4&quot;</span>, <span class="st">&quot;x7&quot;</span>),</span>
+<span id="cb1-3"><a href="#cb1-3"></a> <span class="kw">c</span>(<span class="st">&quot;x5&quot;</span>, <span class="st">&quot;x9&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>fit &lt;-<span class="st"> </span><span class="kw">efast</span>(</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="dt">data    =</span> lavaan<span class="op">::</span>HolzingerSwineford1939[,<span class="dv">7</span><span class="op">:</span><span class="dv">15</span>], </span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="dt">M       =</span> <span class="dv">3</span>, </span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="dt">rstruct =</span> res_struct</span>
+<span id="cb1-9"><a href="#cb1-9"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">summary</span>(fit)</span></code></pre></div>
+<pre><code>## lavaan 0.6-5 ended normally after 51 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         38
+##   Number of equality constraints                     3
+##   Row rank of the constraints matrix                 3
+##                                                       
+##   Rotation method                       GEOMIN OBLIQUE
+##   Geomin epsilon                                  0.01
+##   Rotation algorithm (rstarts)               GPA (100)
+##   Standardized metric                            FALSE
+##   Row weights                                     None
+##                                                       
+##   Number of observations                           301
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 9.073
+##   Degrees of freedom                                10
+##   P-value (Chi-square)                           0.525
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Observed
+##   Observed information based on                Hessian
+##   Standard errors                             Standard
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##   F1 =~ efa1                                          
+##     x1                0.613    0.074    8.313    0.000
+##     x2                0.486    0.076    6.430    0.000
+##     x3                0.680    0.073    9.300    0.000
+##     x4                0.048    0.030    1.626    0.104
+##     x5               -0.103    0.043   -2.391    0.017
+##     x6                0.062    0.039    1.583    0.113
+##     x7               -0.116    0.084   -1.379    0.168
+##     x8                0.124    0.122    1.017    0.309
+##     x9                0.405    0.105    3.858    0.000
+##   F2 =~ efa1                                          
+##     x1                0.188    0.067    2.809    0.005
+##     x2                0.046    0.053    0.868    0.385
+##     x3               -0.069    0.054   -1.276    0.202
+##     x4                0.835    0.051   16.241    0.000
+##     x5                0.904    0.052   17.242    0.000
+##     x6                0.803    0.051   15.705    0.000
+##     x7                0.016    0.034    0.480    0.631
+##     x8               -0.014    0.039   -0.350    0.726
+##     x9                0.013    0.034    0.393    0.694
+##   F3 =~ efa1                                          
+##     x1                0.021    0.038    0.552    0.581
+##     x2               -0.108    0.070   -1.552    0.121
+##     x3                0.021    0.043    0.473    0.636
+##     x4               -0.041    0.041   -1.006    0.314
+##     x5                0.023    0.027    0.826    0.409
+##     x6                0.016    0.035    0.475    0.635
+##     x7                0.723    0.069   10.459    0.000
+##     x8                0.692    0.094    7.380    0.000
+##     x9                0.449    0.076    5.934    0.000
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##  .x4 ~~                                               
+##    .x7                0.106    0.037    2.883    0.004
+##  .x5 ~~                                               
+##    .x9                0.056    0.033    1.712    0.087
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .x1       (v_1)    0.500    0.063    7.879       NA
+##    .x2       (v_2)    0.759    0.073   10.348       NA
+##    .x3       (v_3)    0.555    0.075    7.426       NA
+##    .x4       (v_4)    0.282    0.035    7.965       NA
+##    .x5       (v_5)    0.224    0.038    5.904       NA
+##    .x6       (v_6)    0.309    0.035    8.745       NA
+##    .x7       (v_7)    0.498    0.095    5.234       NA
+##    .x8       (v_8)    0.465    0.079    5.881       NA
+##    .x9       (v_9)    0.538    0.059    9.073       NA
+##     F1                1.000                           
+##     F2                1.000                           
+##     F3                1.000</code></pre>
+<p>The <code>lavaan</code> syntax of any model from the <code>efast</code> package is available as a component of the fitted model (<code>fit@external$syntax</code>). This means that any EFAST model can be easily extended with further variables. An example in the case of the hemisphere model from the previous tutorials could be predicting participant phenotype on the basis of the estimated factors. This extension would amount to adding the following line to the current example model syntax:</p>
 <pre><code>phenotype_variable ~ F1 + F2 + F3 + F4 + F5 + F6</code></pre>
 <p>The extended model can then be fitted by a call to the fitting function from the <code>lavaan</code> package:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">lavaan</span>(</span>
-<span id="cb2-2"><a href="#cb2-2"></a>  <span class="dt">model          =</span> extended_model, </span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">data           =</span> raw_data, </span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="dt">auto.fix.first =</span> <span class="ot">FALSE</span>, </span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="dt">auto.var       =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="dt">auto.efa       =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="dt">information    =</span> <span class="st">&quot;observed&quot;</span>, </span>
-<span id="cb2-8"><a href="#cb2-8"></a>  <span class="dt">std.ov         =</span> <span class="ot">TRUE</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">lavaan</span>(</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="dt">model          =</span> extended_model, </span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">data           =</span> raw_data, </span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="dt">auto.fix.first =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="dt">auto.var       =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="dt">auto.efa       =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="dt">information    =</span> <span class="st">&quot;observed&quot;</span>, </span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="dt">std.ov         =</span> <span class="ot">TRUE</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>)</span></code></pre></div>
 <p>By adding this extension, <code>lavaan</code> will in one step find those factors that best explain the covariance between brain regions and the phenotype of interest, reasonably similar to the idea of PLS regression. In this way, the EFAST model can serve as a starting point for an ESEM with structural parameters.</p>
 <div id="full-syntax" class="section level1">
 <h1>Full syntax</h1>
-<p>Below is the full syntax for the the fitted EFAST model from this tutorial, with 6 latent factors and a symmetry structure. Within this syntax, additional constraints are added to aid in convergence of the parameters.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">cat</span>(efast_fit<span class="op">@</span>external<span class="op">$</span>syntax)</span></code></pre></div>
+<p>Below is the full syntax for the the fitted EFAST model on the brain imaging data from both hemispheres, with 6 latent factors and a symmetry structure. Within this syntax, the <code>efast</code> package adds additional constraints to aid in convergence of the parameters. In addition, syntax is added for the lateralization indices.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">cat</span>(efast_hemi_fit<span class="op">@</span>external<span class="op">$</span>syntax)</span></code></pre></div>
 <pre><code>## # Exploratory factor model
 ## # ------------------------
 ##  efa(&#39;efa1&#39;)*F1 +
@@ -472,389 +565,182 @@ summary {
 ## 
 ## # Uniqueness constraints
 ## # ----------------------
-## lh_ROI1 ~~ v_1*lh_ROI1
-## v_1 &gt; -13993.4797637206
-## v_1 &lt; 293863.075038132
-## lh_ROI2 ~~ v_2*lh_ROI2
-## v_2 &gt; -10348.4890982868
-## v_2 &lt; 217318.271064024
-## lh_ROI3 ~~ v_3*lh_ROI3
-## v_3 &gt; -78770.6806573636
-## v_3 &lt; 1654184.29380464
-## lh_ROI4 ~~ v_4*lh_ROI4
-## v_4 &gt; -19950.7650556666
-## v_4 &lt; 418966.066168999
-## lh_ROI5 ~~ v_5*lh_ROI5
-## v_5 &gt; -13910.3532508319
-## v_5 &lt; 292117.41826747
-## lh_ROI6 ~~ v_6*lh_ROI6
-## v_6 &gt; -115142.590773976
-## v_6 &lt; 2417994.40625349
-## lh_ROI7 ~~ v_7*lh_ROI7
-## v_7 &gt; -210606.806054634
-## v_7 &lt; 4422742.92714732
-## lh_ROI8 ~~ v_8*lh_ROI8
-## v_8 &gt; -221098.516745292
-## v_8 &lt; 4643068.85165114
-## lh_ROI9 ~~ v_9*lh_ROI9
-## v_9 &gt; -12151.0395052477
-## v_9 &lt; 255171.829610202
-## lh_ROI10 ~~ v_10*lh_ROI10
-## v_10 &gt; -207095.453392982
-## v_10 &lt; 4349004.52125262
-## lh_ROI11 ~~ v_11*lh_ROI11
-## v_11 &gt; -51555.0119607649
-## v_11 &lt; 1082655.25117606
-## lh_ROI12 ~~ v_12*lh_ROI12
-## v_12 &gt; -60131.865595877
-## v_12 &lt; 1262769.17751342
-## lh_ROI13 ~~ v_13*lh_ROI13
-## v_13 &gt; -28010.1118856976
-## v_13 &lt; 588212.34959965
-## lh_ROI14 ~~ v_14*lh_ROI14
-## v_14 &gt; -182904.802717737
-## v_14 &lt; 3841000.85707249
-## lh_ROI15 ~~ v_15*lh_ROI15
-## v_15 &gt; -5153.22029385318
-## v_15 &lt; 108217.626170917
-## lh_ROI16 ~~ v_16*lh_ROI16
-## v_16 &gt; -16444.0318799443
-## v_16 &lt; 345324.669478831
-## lh_ROI17 ~~ v_17*lh_ROI17
-## v_17 &gt; -37342.4691991103
-## v_17 &lt; 784191.853181317
-## lh_ROI18 ~~ v_18*lh_ROI18
-## v_18 &gt; -7015.71966636367
-## v_18 &lt; 147330.112993637
-## lh_ROI19 ~~ v_19*lh_ROI19
-## v_19 &gt; -25643.7505564725
-## v_19 &lt; 538518.761685923
-## lh_ROI20 ~~ v_20*lh_ROI20
-## v_20 &gt; -9042.01372368027
-## v_20 &lt; 189882.288197286
-## lh_ROI21 ~~ v_21*lh_ROI21
-## v_21 &gt; -127658.334582129
-## v_21 &lt; 2680825.02622471
-## lh_ROI22 ~~ v_22*lh_ROI22
-## v_22 &gt; -16921.4960697826
-## v_22 &lt; 355351.417465434
-## lh_ROI23 ~~ v_23*lh_ROI23
-## v_23 &gt; -218655.864028077
-## v_23 &lt; 4591773.14458961
-## lh_ROI24 ~~ v_24*lh_ROI24
-## v_24 &gt; -107174.503076179
-## v_24 &lt; 2250664.56459975
-## lh_ROI25 ~~ v_25*lh_ROI25
-## v_25 &gt; -14590.4025267503
-## v_25 &lt; 306398.453061756
-## lh_ROI26 ~~ v_26*lh_ROI26
-## v_26 &gt; -308126.642933268
-## v_26 &lt; 6470659.50159863
-## lh_ROI27 ~~ v_27*lh_ROI27
-## v_27 &gt; -567444.02485212
-## v_27 &lt; 11916324.5218945
-## lh_ROI28 ~~ v_28*lh_ROI28
-## v_28 &gt; -223464.980403162
-## v_28 &lt; 4692764.58846639
-## lh_ROI29 ~~ v_29*lh_ROI29
-## v_29 &gt; -210371.067759917
-## v_29 &lt; 4417792.42295826
-## lh_ROI30 ~~ v_30*lh_ROI30
-## v_30 &gt; -214454.957333775
-## v_30 &lt; 4503554.10400927
-## lh_ROI31 ~~ v_31*lh_ROI31
-## v_31 &gt; -1033.35313157121
-## v_31 &lt; 21700.4157629955
-## lh_ROI32 ~~ v_32*lh_ROI32
-## v_32 &gt; -10741.3946362945
-## v_32 &lt; 225569.287362184
-## lh_ROI33 ~~ v_33*lh_ROI33
-## v_33 &gt; -3326.22796602778
-## v_33 &lt; 69850.7872865835
-## lh_ROI34 ~~ v_34*lh_ROI34
-## v_34 &gt; -35248.8350583003
-## v_34 &lt; 740225.536224306
-## rh_ROI1 ~~ v_35*rh_ROI1
-## v_35 &gt; -8308.46604839357
-## v_35 &lt; 174477.787016265
-## rh_ROI2 ~~ v_36*rh_ROI2
-## v_36 &gt; -12682.6731196199
-## v_36 &lt; 266336.135512018
-## rh_ROI3 ~~ v_37*rh_ROI3
-## v_37 &gt; -68191.5082601337
-## v_37 &lt; 1432021.67346281
-## rh_ROI4 ~~ v_38*rh_ROI4
-## v_38 &gt; -22596.6657219375
-## v_38 &lt; 474529.980160688
-## rh_ROI5 ~~ v_39*rh_ROI5
-## v_39 &gt; -13260.9639400389
-## v_39 &lt; 278480.242740816
-## rh_ROI6 ~~ v_40*rh_ROI6
-## v_40 &gt; -132429.7822454
-## v_40 &lt; 2781025.42715339
-## rh_ROI7 ~~ v_41*rh_ROI7
-## v_41 &gt; -330061.515346262
-## v_41 &lt; 6931291.8222715
-## rh_ROI8 ~~ v_42*rh_ROI8
-## v_42 &gt; -198919.257321719
-## v_42 &lt; 4177304.40375609
-## rh_ROI9 ~~ v_43*rh_ROI9
-## v_43 &gt; -10465.2466173908
-## v_43 &lt; 219770.178965206
-## rh_ROI10 ~~ v_44*rh_ROI10
-## v_44 &gt; -193979.371828728
-## v_44 &lt; 4073566.80840328
-## rh_ROI11 ~~ v_45*rh_ROI11
-## v_45 &gt; -46341.8529746432
-## v_45 &lt; 973178.912467507
-## rh_ROI12 ~~ v_46*rh_ROI12
-## v_46 &gt; -74702.136392697
-## v_46 &lt; 1568744.86424664
-## rh_ROI13 ~~ v_47*rh_ROI13
-## v_47 &gt; -27133.1357428076
-## v_47 &lt; 569795.850598959
-## rh_ROI14 ~~ v_48*rh_ROI14
-## v_48 &gt; -183454.30280325
-## v_48 &lt; 3852540.35886825
-## rh_ROI15 ~~ v_49*rh_ROI15
-## v_49 &gt; -3845.01451602437
-## v_49 &lt; 80745.3048365117
-## rh_ROI16 ~~ v_50*rh_ROI16
-## v_50 &gt; -20965.0817647794
-## v_50 &lt; 440266.717060367
-## rh_ROI17 ~~ v_51*rh_ROI17
-## v_51 &gt; -25604.0486305311
-## v_51 &lt; 537685.021241152
-## rh_ROI18 ~~ v_52*rh_ROI18
-## v_52 &gt; -8597.79324472772
-## v_52 &lt; 180553.658139282
-## rh_ROI19 ~~ v_53*rh_ROI19
-## v_53 &gt; -27421.0207770316
-## v_53 &lt; 575841.436317664
-## rh_ROI20 ~~ v_54*rh_ROI20
-## v_54 &gt; -12157.7757815127
-## v_54 &lt; 255313.291411766
-## rh_ROI21 ~~ v_55*rh_ROI21
-## v_55 &gt; -110791.519558372
-## v_55 &lt; 2326621.91072582
-## rh_ROI22 ~~ v_56*rh_ROI22
-## v_56 &gt; -15549.1515378846
-## v_56 &lt; 326532.182295576
-## rh_ROI23 ~~ v_57*rh_ROI23
-## v_57 &gt; -231805.083435852
-## v_57 &lt; 4867906.75215289
-## rh_ROI24 ~~ v_58*rh_ROI24
-## v_58 &gt; -117592.187142819
-## v_58 &lt; 2469435.92999919
-## rh_ROI25 ~~ v_59*rh_ROI25
-## v_59 &gt; -11094.130509664
-## v_59 &lt; 232976.740702944
-## rh_ROI26 ~~ v_60*rh_ROI26
-## v_60 &gt; -285948.505148891
-## v_60 &lt; 6004918.60812672
-## rh_ROI27 ~~ v_61*rh_ROI27
-## v_61 &gt; -532983.270280952
-## v_61 &lt; 11192648.6759
-## rh_ROI28 ~~ v_62*rh_ROI28
-## v_62 &gt; -200782.024915205
-## v_62 &lt; 4216422.52321931
-## rh_ROI29 ~~ v_63*rh_ROI29
-## v_63 &gt; -149451.871560063
-## v_63 &lt; 3138489.30276133
-## rh_ROI30 ~~ v_64*rh_ROI30
-## v_64 &gt; -150501.390735376
-## v_64 &lt; 3160529.20544289
-## rh_ROI31 ~~ v_65*rh_ROI31
-## v_65 &gt; -1672.58158915659
-## v_65 &lt; 35124.2133722883
-## rh_ROI32 ~~ v_66*rh_ROI32
-## v_66 &gt; -7090.08683440532
-## v_66 &lt; 148891.823522512
-## rh_ROI33 ~~ v_67*rh_ROI33
-## v_67 &gt; -1679.18589887011
-## v_67 &lt; 35262.9038762722
-## rh_ROI34 ~~ v_68*rh_ROI34
-## v_68 &gt; -41686.0171759037
-## v_68 &lt; 875406.360693978
+## lh_ROI1 ~~ lower(-13993.4797637206)*lh_ROI1 + upper(293863.075038132)*lh_ROI1 + v_1*lh_ROI1
+## lh_ROI2 ~~ lower(-10348.4890982868)*lh_ROI2 + upper(217318.271064024)*lh_ROI2 + v_2*lh_ROI2
+## lh_ROI3 ~~ lower(-78770.6806573636)*lh_ROI3 + upper(1654184.29380464)*lh_ROI3 + v_3*lh_ROI3
+## lh_ROI4 ~~ lower(-19950.7650556666)*lh_ROI4 + upper(418966.066168999)*lh_ROI4 + v_4*lh_ROI4
+## lh_ROI5 ~~ lower(-13910.3532508319)*lh_ROI5 + upper(292117.41826747)*lh_ROI5 + v_5*lh_ROI5
+## lh_ROI6 ~~ lower(-115142.590773976)*lh_ROI6 + upper(2417994.40625349)*lh_ROI6 + v_6*lh_ROI6
+## lh_ROI7 ~~ lower(-210606.806054634)*lh_ROI7 + upper(4422742.92714732)*lh_ROI7 + v_7*lh_ROI7
+## lh_ROI8 ~~ lower(-221098.516745292)*lh_ROI8 + upper(4643068.85165114)*lh_ROI8 + v_8*lh_ROI8
+## lh_ROI9 ~~ lower(-12151.0395052477)*lh_ROI9 + upper(255171.829610202)*lh_ROI9 + v_9*lh_ROI9
+## lh_ROI10 ~~ lower(-207095.453392982)*lh_ROI10 + upper(4349004.52125262)*lh_ROI10 + v_10*lh_ROI10
+## lh_ROI11 ~~ lower(-51555.0119607649)*lh_ROI11 + upper(1082655.25117606)*lh_ROI11 + v_11*lh_ROI11
+## lh_ROI12 ~~ lower(-60131.865595877)*lh_ROI12 + upper(1262769.17751342)*lh_ROI12 + v_12*lh_ROI12
+## lh_ROI13 ~~ lower(-28010.1118856976)*lh_ROI13 + upper(588212.34959965)*lh_ROI13 + v_13*lh_ROI13
+## lh_ROI14 ~~ lower(-182904.802717737)*lh_ROI14 + upper(3841000.85707249)*lh_ROI14 + v_14*lh_ROI14
+## lh_ROI15 ~~ lower(-5153.22029385318)*lh_ROI15 + upper(108217.626170917)*lh_ROI15 + v_15*lh_ROI15
+## lh_ROI16 ~~ lower(-16444.0318799443)*lh_ROI16 + upper(345324.669478831)*lh_ROI16 + v_16*lh_ROI16
+## lh_ROI17 ~~ lower(-37342.4691991103)*lh_ROI17 + upper(784191.853181317)*lh_ROI17 + v_17*lh_ROI17
+## lh_ROI18 ~~ lower(-7015.71966636367)*lh_ROI18 + upper(147330.112993637)*lh_ROI18 + v_18*lh_ROI18
+## lh_ROI19 ~~ lower(-25643.7505564725)*lh_ROI19 + upper(538518.761685923)*lh_ROI19 + v_19*lh_ROI19
+## lh_ROI20 ~~ lower(-9042.01372368027)*lh_ROI20 + upper(189882.288197286)*lh_ROI20 + v_20*lh_ROI20
+## lh_ROI21 ~~ lower(-127658.334582129)*lh_ROI21 + upper(2680825.02622471)*lh_ROI21 + v_21*lh_ROI21
+## lh_ROI22 ~~ lower(-16921.4960697826)*lh_ROI22 + upper(355351.417465434)*lh_ROI22 + v_22*lh_ROI22
+## lh_ROI23 ~~ lower(-218655.864028077)*lh_ROI23 + upper(4591773.14458961)*lh_ROI23 + v_23*lh_ROI23
+## lh_ROI24 ~~ lower(-107174.503076179)*lh_ROI24 + upper(2250664.56459975)*lh_ROI24 + v_24*lh_ROI24
+## lh_ROI25 ~~ lower(-14590.4025267503)*lh_ROI25 + upper(306398.453061756)*lh_ROI25 + v_25*lh_ROI25
+## lh_ROI26 ~~ lower(-308126.642933268)*lh_ROI26 + upper(6470659.50159863)*lh_ROI26 + v_26*lh_ROI26
+## lh_ROI27 ~~ lower(-567444.02485212)*lh_ROI27 + upper(11916324.5218945)*lh_ROI27 + v_27*lh_ROI27
+## lh_ROI28 ~~ lower(-223464.980403162)*lh_ROI28 + upper(4692764.58846639)*lh_ROI28 + v_28*lh_ROI28
+## lh_ROI29 ~~ lower(-210371.067759917)*lh_ROI29 + upper(4417792.42295826)*lh_ROI29 + v_29*lh_ROI29
+## lh_ROI30 ~~ lower(-214454.957333775)*lh_ROI30 + upper(4503554.10400927)*lh_ROI30 + v_30*lh_ROI30
+## lh_ROI31 ~~ lower(-1033.35313157121)*lh_ROI31 + upper(21700.4157629955)*lh_ROI31 + v_31*lh_ROI31
+## lh_ROI32 ~~ lower(-10741.3946362945)*lh_ROI32 + upper(225569.287362184)*lh_ROI32 + v_32*lh_ROI32
+## lh_ROI33 ~~ lower(-3326.22796602778)*lh_ROI33 + upper(69850.7872865835)*lh_ROI33 + v_33*lh_ROI33
+## lh_ROI34 ~~ lower(-35248.8350583003)*lh_ROI34 + upper(740225.536224306)*lh_ROI34 + v_34*lh_ROI34
+## rh_ROI1 ~~ lower(-8308.46604839357)*rh_ROI1 + upper(174477.787016265)*rh_ROI1 + v_35*rh_ROI1
+## rh_ROI2 ~~ lower(-12682.6731196199)*rh_ROI2 + upper(266336.135512018)*rh_ROI2 + v_36*rh_ROI2
+## rh_ROI3 ~~ lower(-68191.5082601337)*rh_ROI3 + upper(1432021.67346281)*rh_ROI3 + v_37*rh_ROI3
+## rh_ROI4 ~~ lower(-22596.6657219375)*rh_ROI4 + upper(474529.980160688)*rh_ROI4 + v_38*rh_ROI4
+## rh_ROI5 ~~ lower(-13260.9639400389)*rh_ROI5 + upper(278480.242740816)*rh_ROI5 + v_39*rh_ROI5
+## rh_ROI6 ~~ lower(-132429.7822454)*rh_ROI6 + upper(2781025.42715339)*rh_ROI6 + v_40*rh_ROI6
+## rh_ROI7 ~~ lower(-330061.515346262)*rh_ROI7 + upper(6931291.8222715)*rh_ROI7 + v_41*rh_ROI7
+## rh_ROI8 ~~ lower(-198919.257321719)*rh_ROI8 + upper(4177304.40375609)*rh_ROI8 + v_42*rh_ROI8
+## rh_ROI9 ~~ lower(-10465.2466173908)*rh_ROI9 + upper(219770.178965206)*rh_ROI9 + v_43*rh_ROI9
+## rh_ROI10 ~~ lower(-193979.371828728)*rh_ROI10 + upper(4073566.80840328)*rh_ROI10 + v_44*rh_ROI10
+## rh_ROI11 ~~ lower(-46341.8529746432)*rh_ROI11 + upper(973178.912467507)*rh_ROI11 + v_45*rh_ROI11
+## rh_ROI12 ~~ lower(-74702.136392697)*rh_ROI12 + upper(1568744.86424664)*rh_ROI12 + v_46*rh_ROI12
+## rh_ROI13 ~~ lower(-27133.1357428076)*rh_ROI13 + upper(569795.850598959)*rh_ROI13 + v_47*rh_ROI13
+## rh_ROI14 ~~ lower(-183454.30280325)*rh_ROI14 + upper(3852540.35886825)*rh_ROI14 + v_48*rh_ROI14
+## rh_ROI15 ~~ lower(-3845.01451602437)*rh_ROI15 + upper(80745.3048365117)*rh_ROI15 + v_49*rh_ROI15
+## rh_ROI16 ~~ lower(-20965.0817647794)*rh_ROI16 + upper(440266.717060367)*rh_ROI16 + v_50*rh_ROI16
+## rh_ROI17 ~~ lower(-25604.0486305311)*rh_ROI17 + upper(537685.021241152)*rh_ROI17 + v_51*rh_ROI17
+## rh_ROI18 ~~ lower(-8597.79324472772)*rh_ROI18 + upper(180553.658139282)*rh_ROI18 + v_52*rh_ROI18
+## rh_ROI19 ~~ lower(-27421.0207770316)*rh_ROI19 + upper(575841.436317664)*rh_ROI19 + v_53*rh_ROI19
+## rh_ROI20 ~~ lower(-12157.7757815127)*rh_ROI20 + upper(255313.291411766)*rh_ROI20 + v_54*rh_ROI20
+## rh_ROI21 ~~ lower(-110791.519558372)*rh_ROI21 + upper(2326621.91072582)*rh_ROI21 + v_55*rh_ROI21
+## rh_ROI22 ~~ lower(-15549.1515378846)*rh_ROI22 + upper(326532.182295576)*rh_ROI22 + v_56*rh_ROI22
+## rh_ROI23 ~~ lower(-231805.083435852)*rh_ROI23 + upper(4867906.75215289)*rh_ROI23 + v_57*rh_ROI23
+## rh_ROI24 ~~ lower(-117592.187142819)*rh_ROI24 + upper(2469435.92999919)*rh_ROI24 + v_58*rh_ROI24
+## rh_ROI25 ~~ lower(-11094.130509664)*rh_ROI25 + upper(232976.740702944)*rh_ROI25 + v_59*rh_ROI25
+## rh_ROI26 ~~ lower(-285948.505148891)*rh_ROI26 + upper(6004918.60812672)*rh_ROI26 + v_60*rh_ROI26
+## rh_ROI27 ~~ lower(-532983.270280952)*rh_ROI27 + upper(11192648.6759)*rh_ROI27 + v_61*rh_ROI27
+## rh_ROI28 ~~ lower(-200782.024915205)*rh_ROI28 + upper(4216422.52321931)*rh_ROI28 + v_62*rh_ROI28
+## rh_ROI29 ~~ lower(-149451.871560063)*rh_ROI29 + upper(3138489.30276133)*rh_ROI29 + v_63*rh_ROI29
+## rh_ROI30 ~~ lower(-150501.390735376)*rh_ROI30 + upper(3160529.20544289)*rh_ROI30 + v_64*rh_ROI30
+## rh_ROI31 ~~ lower(-1672.58158915659)*rh_ROI31 + upper(35124.2133722883)*rh_ROI31 + v_65*rh_ROI31
+## rh_ROI32 ~~ lower(-7090.08683440532)*rh_ROI32 + upper(148891.823522512)*rh_ROI32 + v_66*rh_ROI32
+## rh_ROI33 ~~ lower(-1679.18589887011)*rh_ROI33 + upper(35262.9038762722)*rh_ROI33 + v_67*rh_ROI33
+## rh_ROI34 ~~ lower(-41686.0171759037)*rh_ROI34 + upper(875406.360693978)*rh_ROI34 + v_68*rh_ROI34
 ## 
 ## # Hemisphere model
 ## # ----------------
-## ROI1 =~ 1*lh_ROI1 + 1*rh_ROI1
-## ROI2 =~ 1*lh_ROI2 + 1*rh_ROI2
-## ROI3 =~ 1*lh_ROI3 + 1*rh_ROI3
-## ROI4 =~ 1*lh_ROI4 + 1*rh_ROI4
-## ROI5 =~ 1*lh_ROI5 + 1*rh_ROI5
-## ROI6 =~ 1*lh_ROI6 + 1*rh_ROI6
-## ROI7 =~ 1*lh_ROI7 + 1*rh_ROI7
-## ROI8 =~ 1*lh_ROI8 + 1*rh_ROI8
-## ROI9 =~ 1*lh_ROI9 + 1*rh_ROI9
-## ROI10 =~ 1*lh_ROI10 + 1*rh_ROI10
-## ROI11 =~ 1*lh_ROI11 + 1*rh_ROI11
-## ROI12 =~ 1*lh_ROI12 + 1*rh_ROI12
-## ROI13 =~ 1*lh_ROI13 + 1*rh_ROI13
-## ROI14 =~ 1*lh_ROI14 + 1*rh_ROI14
-## ROI15 =~ 1*lh_ROI15 + 1*rh_ROI15
-## ROI16 =~ 1*lh_ROI16 + 1*rh_ROI16
-## ROI17 =~ 1*lh_ROI17 + 1*rh_ROI17
-## ROI18 =~ 1*lh_ROI18 + 1*rh_ROI18
-## ROI19 =~ 1*lh_ROI19 + 1*rh_ROI19
-## ROI20 =~ 1*lh_ROI20 + 1*rh_ROI20
-## ROI21 =~ 1*lh_ROI21 + 1*rh_ROI21
-## ROI22 =~ 1*lh_ROI22 + 1*rh_ROI22
-## ROI23 =~ 1*lh_ROI23 + 1*rh_ROI23
-## ROI24 =~ 1*lh_ROI24 + 1*rh_ROI24
-## ROI25 =~ 1*lh_ROI25 + 1*rh_ROI25
-## ROI26 =~ 1*lh_ROI26 + 1*rh_ROI26
-## ROI27 =~ 1*lh_ROI27 + 1*rh_ROI27
-## ROI28 =~ 1*lh_ROI28 + 1*rh_ROI28
-## ROI29 =~ 1*lh_ROI29 + 1*rh_ROI29
-## ROI30 =~ 1*lh_ROI30 + 1*rh_ROI30
-## ROI31 =~ 1*lh_ROI31 + 1*rh_ROI31
-## ROI32 =~ 1*lh_ROI32 + 1*rh_ROI32
-## ROI33 =~ 1*lh_ROI33 + 1*rh_ROI33
-## ROI34 =~ 1*lh_ROI34 + 1*rh_ROI34
-## 
-## # Hemisphere covariances
-## # ----------------------
-## ROI1 ~~ cov_ROI1*ROI1
-## cov_ROI1 &gt; 0
-## ROI2 ~~ cov_ROI2*ROI2
-## cov_ROI2 &gt; 0
-## ROI3 ~~ cov_ROI3*ROI3
-## cov_ROI3 &gt; 0
-## ROI4 ~~ cov_ROI4*ROI4
-## cov_ROI4 &gt; 0
-## ROI5 ~~ cov_ROI5*ROI5
-## cov_ROI5 &gt; 0
-## ROI6 ~~ cov_ROI6*ROI6
-## cov_ROI6 &gt; 0
-## ROI7 ~~ cov_ROI7*ROI7
-## cov_ROI7 &gt; 0
-## ROI8 ~~ cov_ROI8*ROI8
-## cov_ROI8 &gt; 0
-## ROI9 ~~ cov_ROI9*ROI9
-## cov_ROI9 &gt; 0
-## ROI10 ~~ cov_ROI10*ROI10
-## cov_ROI10 &gt; 0
-## ROI11 ~~ cov_ROI11*ROI11
-## cov_ROI11 &gt; 0
-## ROI12 ~~ cov_ROI12*ROI12
-## cov_ROI12 &gt; 0
-## ROI13 ~~ cov_ROI13*ROI13
-## cov_ROI13 &gt; 0
-## ROI14 ~~ cov_ROI14*ROI14
-## cov_ROI14 &gt; 0
-## ROI15 ~~ cov_ROI15*ROI15
-## cov_ROI15 &gt; 0
-## ROI16 ~~ cov_ROI16*ROI16
-## cov_ROI16 &gt; 0
-## ROI17 ~~ cov_ROI17*ROI17
-## cov_ROI17 &gt; 0
-## ROI18 ~~ cov_ROI18*ROI18
-## cov_ROI18 &gt; 0
-## ROI19 ~~ cov_ROI19*ROI19
-## cov_ROI19 &gt; 0
-## ROI20 ~~ cov_ROI20*ROI20
-## cov_ROI20 &gt; 0
-## ROI21 ~~ cov_ROI21*ROI21
-## cov_ROI21 &gt; 0
-## ROI22 ~~ cov_ROI22*ROI22
-## cov_ROI22 &gt; 0
-## ROI23 ~~ cov_ROI23*ROI23
-## cov_ROI23 &gt; 0
-## ROI24 ~~ cov_ROI24*ROI24
-## cov_ROI24 &gt; 0
-## ROI25 ~~ cov_ROI25*ROI25
-## cov_ROI25 &gt; 0
-## ROI26 ~~ cov_ROI26*ROI26
-## cov_ROI26 &gt; 0
-## ROI27 ~~ cov_ROI27*ROI27
-## cov_ROI27 &gt; 0
-## ROI28 ~~ cov_ROI28*ROI28
-## cov_ROI28 &gt; 0
-## ROI29 ~~ cov_ROI29*ROI29
-## cov_ROI29 &gt; 0
-## ROI30 ~~ cov_ROI30*ROI30
-## cov_ROI30 &gt; 0
-## ROI31 ~~ cov_ROI31*ROI31
-## cov_ROI31 &gt; 0
-## ROI32 ~~ cov_ROI32*ROI32
-## cov_ROI32 &gt; 0
-## ROI33 ~~ cov_ROI33*ROI33
-## cov_ROI33 &gt; 0
-## ROI34 ~~ cov_ROI34*ROI34
-## cov_ROI34 &gt; 0
+## lh_ROI1 ~~ cov_ROI1*rh_ROI1
+## lh_ROI2 ~~ cov_ROI2*rh_ROI2
+## lh_ROI3 ~~ cov_ROI3*rh_ROI3
+## lh_ROI4 ~~ cov_ROI4*rh_ROI4
+## lh_ROI5 ~~ cov_ROI5*rh_ROI5
+## lh_ROI6 ~~ cov_ROI6*rh_ROI6
+## lh_ROI7 ~~ cov_ROI7*rh_ROI7
+## lh_ROI8 ~~ cov_ROI8*rh_ROI8
+## lh_ROI9 ~~ cov_ROI9*rh_ROI9
+## lh_ROI10 ~~ cov_ROI10*rh_ROI10
+## lh_ROI11 ~~ cov_ROI11*rh_ROI11
+## lh_ROI12 ~~ cov_ROI12*rh_ROI12
+## lh_ROI13 ~~ cov_ROI13*rh_ROI13
+## lh_ROI14 ~~ cov_ROI14*rh_ROI14
+## lh_ROI15 ~~ cov_ROI15*rh_ROI15
+## lh_ROI16 ~~ cov_ROI16*rh_ROI16
+## lh_ROI17 ~~ cov_ROI17*rh_ROI17
+## lh_ROI18 ~~ cov_ROI18*rh_ROI18
+## lh_ROI19 ~~ cov_ROI19*rh_ROI19
+## lh_ROI20 ~~ cov_ROI20*rh_ROI20
+## lh_ROI21 ~~ cov_ROI21*rh_ROI21
+## lh_ROI22 ~~ cov_ROI22*rh_ROI22
+## lh_ROI23 ~~ cov_ROI23*rh_ROI23
+## lh_ROI24 ~~ cov_ROI24*rh_ROI24
+## lh_ROI25 ~~ cov_ROI25*rh_ROI25
+## lh_ROI26 ~~ cov_ROI26*rh_ROI26
+## lh_ROI27 ~~ cov_ROI27*rh_ROI27
+## lh_ROI28 ~~ cov_ROI28*rh_ROI28
+## lh_ROI29 ~~ cov_ROI29*rh_ROI29
+## lh_ROI30 ~~ cov_ROI30*rh_ROI30
+## lh_ROI31 ~~ cov_ROI31*rh_ROI31
+## lh_ROI32 ~~ cov_ROI32*rh_ROI32
+## lh_ROI33 ~~ cov_ROI33*rh_ROI33
+## lh_ROI34 ~~ cov_ROI34*rh_ROI34
 ## 
 ## # Lateralization index code
 ## # -----------------------------------
 ## usum_ROI1 := v_1 + v_35
-## LI_ROI1 := usum_ROI1 / (usum_ROI1 + 2*cov_ROI1)
+## LI_ROI1 := (usum_ROI1 - 2*abs(cov_ROI1)) / usum_ROI1
 ## usum_ROI2 := v_2 + v_36
-## LI_ROI2 := usum_ROI2 / (usum_ROI2 + 2*cov_ROI2)
+## LI_ROI2 := (usum_ROI2 - 2*abs(cov_ROI2)) / usum_ROI2
 ## usum_ROI3 := v_3 + v_37
-## LI_ROI3 := usum_ROI3 / (usum_ROI3 + 2*cov_ROI3)
+## LI_ROI3 := (usum_ROI3 - 2*abs(cov_ROI3)) / usum_ROI3
 ## usum_ROI4 := v_4 + v_38
-## LI_ROI4 := usum_ROI4 / (usum_ROI4 + 2*cov_ROI4)
+## LI_ROI4 := (usum_ROI4 - 2*abs(cov_ROI4)) / usum_ROI4
 ## usum_ROI5 := v_5 + v_39
-## LI_ROI5 := usum_ROI5 / (usum_ROI5 + 2*cov_ROI5)
+## LI_ROI5 := (usum_ROI5 - 2*abs(cov_ROI5)) / usum_ROI5
 ## usum_ROI6 := v_6 + v_40
-## LI_ROI6 := usum_ROI6 / (usum_ROI6 + 2*cov_ROI6)
+## LI_ROI6 := (usum_ROI6 - 2*abs(cov_ROI6)) / usum_ROI6
 ## usum_ROI7 := v_7 + v_41
-## LI_ROI7 := usum_ROI7 / (usum_ROI7 + 2*cov_ROI7)
+## LI_ROI7 := (usum_ROI7 - 2*abs(cov_ROI7)) / usum_ROI7
 ## usum_ROI8 := v_8 + v_42
-## LI_ROI8 := usum_ROI8 / (usum_ROI8 + 2*cov_ROI8)
+## LI_ROI8 := (usum_ROI8 - 2*abs(cov_ROI8)) / usum_ROI8
 ## usum_ROI9 := v_9 + v_43
-## LI_ROI9 := usum_ROI9 / (usum_ROI9 + 2*cov_ROI9)
+## LI_ROI9 := (usum_ROI9 - 2*abs(cov_ROI9)) / usum_ROI9
 ## usum_ROI10 := v_10 + v_44
-## LI_ROI10 := usum_ROI10 / (usum_ROI10 + 2*cov_ROI10)
+## LI_ROI10 := (usum_ROI10 - 2*abs(cov_ROI10)) / usum_ROI10
 ## usum_ROI11 := v_11 + v_45
-## LI_ROI11 := usum_ROI11 / (usum_ROI11 + 2*cov_ROI11)
+## LI_ROI11 := (usum_ROI11 - 2*abs(cov_ROI11)) / usum_ROI11
 ## usum_ROI12 := v_12 + v_46
-## LI_ROI12 := usum_ROI12 / (usum_ROI12 + 2*cov_ROI12)
+## LI_ROI12 := (usum_ROI12 - 2*abs(cov_ROI12)) / usum_ROI12
 ## usum_ROI13 := v_13 + v_47
-## LI_ROI13 := usum_ROI13 / (usum_ROI13 + 2*cov_ROI13)
+## LI_ROI13 := (usum_ROI13 - 2*abs(cov_ROI13)) / usum_ROI13
 ## usum_ROI14 := v_14 + v_48
-## LI_ROI14 := usum_ROI14 / (usum_ROI14 + 2*cov_ROI14)
+## LI_ROI14 := (usum_ROI14 - 2*abs(cov_ROI14)) / usum_ROI14
 ## usum_ROI15 := v_15 + v_49
-## LI_ROI15 := usum_ROI15 / (usum_ROI15 + 2*cov_ROI15)
+## LI_ROI15 := (usum_ROI15 - 2*abs(cov_ROI15)) / usum_ROI15
 ## usum_ROI16 := v_16 + v_50
-## LI_ROI16 := usum_ROI16 / (usum_ROI16 + 2*cov_ROI16)
+## LI_ROI16 := (usum_ROI16 - 2*abs(cov_ROI16)) / usum_ROI16
 ## usum_ROI17 := v_17 + v_51
-## LI_ROI17 := usum_ROI17 / (usum_ROI17 + 2*cov_ROI17)
+## LI_ROI17 := (usum_ROI17 - 2*abs(cov_ROI17)) / usum_ROI17
 ## usum_ROI18 := v_18 + v_52
-## LI_ROI18 := usum_ROI18 / (usum_ROI18 + 2*cov_ROI18)
+## LI_ROI18 := (usum_ROI18 - 2*abs(cov_ROI18)) / usum_ROI18
 ## usum_ROI19 := v_19 + v_53
-## LI_ROI19 := usum_ROI19 / (usum_ROI19 + 2*cov_ROI19)
+## LI_ROI19 := (usum_ROI19 - 2*abs(cov_ROI19)) / usum_ROI19
 ## usum_ROI20 := v_20 + v_54
-## LI_ROI20 := usum_ROI20 / (usum_ROI20 + 2*cov_ROI20)
+## LI_ROI20 := (usum_ROI20 - 2*abs(cov_ROI20)) / usum_ROI20
 ## usum_ROI21 := v_21 + v_55
-## LI_ROI21 := usum_ROI21 / (usum_ROI21 + 2*cov_ROI21)
+## LI_ROI21 := (usum_ROI21 - 2*abs(cov_ROI21)) / usum_ROI21
 ## usum_ROI22 := v_22 + v_56
-## LI_ROI22 := usum_ROI22 / (usum_ROI22 + 2*cov_ROI22)
+## LI_ROI22 := (usum_ROI22 - 2*abs(cov_ROI22)) / usum_ROI22
 ## usum_ROI23 := v_23 + v_57
-## LI_ROI23 := usum_ROI23 / (usum_ROI23 + 2*cov_ROI23)
+## LI_ROI23 := (usum_ROI23 - 2*abs(cov_ROI23)) / usum_ROI23
 ## usum_ROI24 := v_24 + v_58
-## LI_ROI24 := usum_ROI24 / (usum_ROI24 + 2*cov_ROI24)
+## LI_ROI24 := (usum_ROI24 - 2*abs(cov_ROI24)) / usum_ROI24
 ## usum_ROI25 := v_25 + v_59
-## LI_ROI25 := usum_ROI25 / (usum_ROI25 + 2*cov_ROI25)
+## LI_ROI25 := (usum_ROI25 - 2*abs(cov_ROI25)) / usum_ROI25
 ## usum_ROI26 := v_26 + v_60
-## LI_ROI26 := usum_ROI26 / (usum_ROI26 + 2*cov_ROI26)
+## LI_ROI26 := (usum_ROI26 - 2*abs(cov_ROI26)) / usum_ROI26
 ## usum_ROI27 := v_27 + v_61
-## LI_ROI27 := usum_ROI27 / (usum_ROI27 + 2*cov_ROI27)
+## LI_ROI27 := (usum_ROI27 - 2*abs(cov_ROI27)) / usum_ROI27
 ## usum_ROI28 := v_28 + v_62
-## LI_ROI28 := usum_ROI28 / (usum_ROI28 + 2*cov_ROI28)
+## LI_ROI28 := (usum_ROI28 - 2*abs(cov_ROI28)) / usum_ROI28
 ## usum_ROI29 := v_29 + v_63
-## LI_ROI29 := usum_ROI29 / (usum_ROI29 + 2*cov_ROI29)
+## LI_ROI29 := (usum_ROI29 - 2*abs(cov_ROI29)) / usum_ROI29
 ## usum_ROI30 := v_30 + v_64
-## LI_ROI30 := usum_ROI30 / (usum_ROI30 + 2*cov_ROI30)
+## LI_ROI30 := (usum_ROI30 - 2*abs(cov_ROI30)) / usum_ROI30
 ## usum_ROI31 := v_31 + v_65
-## LI_ROI31 := usum_ROI31 / (usum_ROI31 + 2*cov_ROI31)
+## LI_ROI31 := (usum_ROI31 - 2*abs(cov_ROI31)) / usum_ROI31
 ## usum_ROI32 := v_32 + v_66
-## LI_ROI32 := usum_ROI32 / (usum_ROI32 + 2*cov_ROI32)
+## LI_ROI32 := (usum_ROI32 - 2*abs(cov_ROI32)) / usum_ROI32
 ## usum_ROI33 := v_33 + v_67
-## LI_ROI33 := usum_ROI33 / (usum_ROI33 + 2*cov_ROI33)
+## LI_ROI33 := (usum_ROI33 - 2*abs(cov_ROI33)) / usum_ROI33
 ## usum_ROI34 := v_34 + v_68
-## LI_ROI34 := usum_ROI34 / (usum_ROI34 + 2*cov_ROI34)</code></pre>
+## LI_ROI34 := (usum_ROI34 - 2*abs(cov_ROI34)) / usum_ROI34</code></pre>
 </div>
 
 

@@ -11,16 +11,27 @@ is_efast <- function(x) {
   FALSE
 }
 
-
-#' Check whether an object is an efa-esem model
+#' Check whether an object is an efast-hemi model
 #'
 #' @param x any object
 #'
 #' @export
-is_efa <- function(x) {
+is_efast_hemi <- function(x) {
   if (!inherits(x, "lavaan")) return(FALSE)
   if (is.null(x@external$type)) return(FALSE)
-  if (x@external$type == "EFA") return(TRUE)
+  if (x@external$type == "EFAST_HEMI") return(TRUE)
+  FALSE
+}
+
+#' Check whether an object is an efast-efa model
+#'
+#' @param x any object
+#'
+#' @export
+is_efast_efa <- function(x) {
+  if (!inherits(x, "lavaan")) return(FALSE)
+  if (is.null(x@external$type)) return(FALSE)
+  if (x@external$type == "EFAST_EFA") return(TRUE)
   FALSE
 }
 
@@ -31,7 +42,10 @@ is_efa <- function(x) {
 #'
 #' @export
 efast_loadings <- function(fit, symmetry = FALSE) {
-  if (!is_efast(fit) && !is_efa(fit)) stop("Enter an EFAST or EFA model.")
+  if (!is_efast(fit)) stop("Enter an efast model.")
+  if (symmetry && !is_efast_hemi(fit))
+    stop("Enter an efast-hemi model to use the symmetry option.")
+
   glist         <- fit@Model@GLIST
   efa_idx       <- fit@Model@lv.efa.idx[[1]]$efa1
   M             <- length(efa_idx)
@@ -103,15 +117,13 @@ decomposition <- function(fit) {
   psi_e <- crossprod(H)
   factor_implied <- tcrossprod(lam_e %*% psi_e, lam_e)
 
-  # structure
-  lam_r <- glist$lambda[,-efa_idx]
-  psi_r <- glist$psi[-efa_idx, -efa_idx]
-  structure_component <- tcrossprod(lam_r %*% psi_r, lam_r)
-
   # residual
-  residual_variance <- glist$theta
-  diag(residual_variance) <- diag(residual_variance) + diag(structure_component)
-  diag(structure_component) <- 0
+  theta <- glist$theta
+  residual_variance <- diag(diag(theta))
+
+  # structure
+  structure_component <- theta - residual_variance
+
 
   return(list(observed  = fit@SampleStats@cov[[1]],
               factor    = factor_implied,
