@@ -11,6 +11,7 @@ efast_hemi(
   rh_idx,
   roi_names,
   constrain = FALSE,
+  sample.nobs = NULL,
   auto.fix.first = FALSE,
   auto.var = TRUE,
   auto.efa = TRUE,
@@ -20,7 +21,7 @@ efast_hemi(
 )
 }
 \arguments{
-\item{data}{<data.frame> the dataset}
+\item{data}{<data.frame> the dataset or <matrix> covariance matrix}
 
 \item{M}{<numeric> How many factors, minimum 2}
 
@@ -31,6 +32,8 @@ efast_hemi(
 \item{roi_names}{<character> optional names of rois}
 
 \item{constrain}{<bool> whether to constrain the symmetry (see details)}
+
+\item{sample.nobs}{<numeric> sample size (if data = covmat, see lavaan)}
 
 \item{auto.fix.first}{<bool> see lavaan}
 

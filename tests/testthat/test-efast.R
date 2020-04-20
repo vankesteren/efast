@@ -13,14 +13,39 @@ test_that("EFAST fitting works", {
   expect_true(inherits(efast_loadings(test_efast), "loadings"))
 })
 
+test_that("EFAST fitting with a covariance matrix works", {
+  # get test data
+  test_S <- cov(lavaan::HolzingerSwineford1939[,7:15])
+  test_N <- nrow(lavaan::HolzingerSwineford1939)
+  res_struct <- list(
+    c("x4", "x7"),
+    c("x5", "x9")
+  )
+  test_efast <- efast(test_S, 3, res_struct, sample.nobs = test_N)
 
+  expect_true(is_efast(test_efast))
+  expect_true(inherits(efast_loadings(test_efast), "loadings"))
+})
+
+test_that("EFAST fitting with a single latent variable works", {
+  # get test data
+  test_S <- cov(lavaan::HolzingerSwineford1939[,7:15])
+  test_N <- nrow(lavaan::HolzingerSwineford1939)
+  res_struct <- list(
+    c("x4", "x7"),
+    c("x5", "x9")
+  )
+  test_efast <- efast(test_S, 1, res_struct, sample.nobs = test_N)
+
+  expect_true(is_efast(test_efast))
+  expect_true(inherits(efast_loadings(test_efast), "loadings"))
+})
 
 test_that("EFA fitting works", {
   fit_efa <- efast_efa(data = lavaan::HolzingerSwineford1939[,7:15], M = 3)
   expect_true(is_efast_efa(fit_efa))
   expect_true(inherits(efast_loadings(fit_efa), "loadings"))
 })
-
 
 test_that("EFAST fitting on big data works", {
   set.seed(45)

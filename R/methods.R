@@ -49,7 +49,7 @@ efast_loadings <- function(fit, symmetry = FALSE) {
   glist         <- fit@Model@GLIST
   efa_idx       <- fit@Model@lv.efa.idx[[1]]$efa1
   M             <- length(efa_idx)
-  lam           <- glist$lambda[, efa_idx]
+  lam           <- glist$lambda[, efa_idx, drop = FALSE]
   colnames(lam) <- paste0("F", 1:M)
   rownames(lam) <- fit@Model@dimNames[[1]][[1]]
   if (symmetry) {

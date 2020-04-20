@@ -7,6 +7,7 @@
 efast_efa(
   data,
   M,
+  sample.nobs = NULL,
   auto.fix.first = FALSE,
   auto.var = TRUE,
   auto.efa = TRUE,
@@ -16,9 +17,11 @@ efast_efa(
 )
 }
 \arguments{
-\item{data}{<data.frame> the dataset}
+\item{data}{<data.frame> the dataset or <matrix> covariance matrix}
 
 \item{M}{<numeric> How many factors, minimum 2}
+
+\item{sample.nobs}{<numeric> sample size (if data = covmat, see lavaan)}
 
 \item{auto.fix.first}{<bool> see lavaan}
 
