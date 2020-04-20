@@ -7,9 +7,9 @@
 \alias{lat_index}
 \title{model_syntax}
 \usage{
-efa_model(dat, M = 3)
+efa_model(x, M = 3)
 
-str_model(dat, rstruct)
+str_model(x, rstruct)
 
 hemi_model(rois, var_const = FALSE)
 
