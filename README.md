@@ -1,13 +1,19 @@
 <h3 align="center"> EFAST </h3>
-<p align="center"><a href="https://travis-ci.org/vankesteren/efast"><img src="https://travis-ci.org/vankesteren/efast.svg?branch=master"></img></a><br/>
-<img src="./img/efast_icon.png" width="150px"></img>
+<p align="center"> 
+  <img src="./img/efast_icon.png" width="150px"></img>
 </p>
 
 
-#### Exploratory Factor Analysis with Structured Residuals
+
+<h4 align="center">Exploratory Factor Analysis with Structured Residuals</h4>
+<p align="center">
+<a href="https://travis-ci.org/vankesteren/efast"><img src="https://travis-ci.org/vankesteren/efast.svg?branch=master"></img></a>
+<a href="https://zenodo.org/badge/latestdoi/197017520"><img src="https://zenodo.org/badge/197017520.svg" alt="DOI"></a><br/>
+</p>
+
 Create and fit exploratory factor analysis with structured residuals (EFAST) models for data with feature covariance due to symmetry structure.
 <p align="center">
-<img src="./img/efa_uncorr_met.png" width="500px"></img><br/>
+  <img src="./img/efa_uncorr_met.png" width="500px"></img><br/>
 </p>
 
 #### Installing efast
