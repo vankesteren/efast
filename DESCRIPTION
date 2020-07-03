@@ -1,7 +1,7 @@
 Package: efast
 Type: Package
 Title: Exploratory Factor Analysis with Structured Residuals
-Version: 0.6.0
+Version: 0.6.1
 Author: Erik-Jan van Kesteren
 Maintainer: Erik-Jan van Kesteren <e.vankesteren1@uu.nl>
 Description: Create and estimate EFA and EFA with structured residuals (EFAST) 

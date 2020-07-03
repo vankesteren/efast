@@ -101,10 +101,7 @@ lat_index <- function(rois) {
   mod <- "# Lateralization index code\n# -----------------------------------\n"
 
   for (i in 1:nroi) {
-    mod <- paste0(mod, "usum_", rois[i], " := v_", i, " + v_", i + nroi, "\n")
-    mod <- paste0(mod, "LI_", rois[i], " := ",
-                  "(usum_", rois[i], " - 2*abs(cov_", rois[i], "))",
-                  " / usum_", rois[i], "\n")
+    mod <- paste0(mod, "LI_", rois[i], " := 1 - cov_", rois[i], " / (sqrt(v_", i, ") * sqrt(v_", i + nroi, "))\n")
   }
   mod
 }
