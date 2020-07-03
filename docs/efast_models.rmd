@@ -121,7 +121,11 @@ plot(pred[,c(1, 2)], bg = c("magenta", "orange")[clus$cluster],
 The ROI method factors themselves can be used to determine per ROI the amount of symmetry and, conversely, the amount of lateralization.
 
 Through including lateralization index coefficients in the model code (see `extending the EFAST model` below), the `efast` package provides a nice convenience function for showing how lateralized each ROI is, with automatic standard errors based on the delta method. These standard errors can also be based on bootstrapping, for example, by changing the `efast_hemi()` call to include `se = "bootstrap"`. These lateralization indices -- indicating how much residual variance in the observed variables cannot be explained by the symmetry structure -- are computed for each ROI as
-$$\frac{\sum_{lh, rh} \text{residual variance}}{\sum_{lh, rh} \text{residual variance} + \sum_{lh, rh} \text{variance due to symmetry}}$$
+\begin{equation}
+\label{eq:li}
+    LI_i = 1 - \text{cor}(u^{lh}_i, u^{rh}_i)
+\end{equation}
+where $u^{lh}_i$ and $u^{rh}_i$ are residuals given the trait factors of interest of the $i^{th}$ ROI in the left and right hemisphere, respectively. The correlation $\text{cor}(\cdot\,, \cdot)$ between these residuals represents the amount of symmetry, so the $LI_i$ represents the \textit{residual dissimilarity} of the $i^{th}$ ROI in the two hemispheres.
 
 ```{r later}
 lateralization(efast_fit)
