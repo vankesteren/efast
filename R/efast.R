@@ -178,7 +178,7 @@ efast_efa <- function(data, M, sample.nobs = NULL, auto.fix.first = FALSE,
 #' \dontrun{
 #' # create a test dataset
 #' test_data <- simulate_efast()
-#' fit_efast <- efast_hemi(simdat, M = 4, 1:17, 18:34)
+#' fit_efast <- efast_hemi(test_data, M = 4, 1:17, 18:34)
 #' summary(fit_efast)
 #' }
 #'

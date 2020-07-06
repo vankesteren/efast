@@ -78,8 +78,8 @@ test_that("Methods on efast objects work", {
   li_tab <- lateralization(fit_sim)
   expect_equal(
     round(li_tab[,2], 3),
-    c(0.314, 0.299, 0.304, 0.321, 0.316, 0.282, 0.321, 0.274, 0.218,
-      0.219, 0.199, 0.217, 0.218, 0.200, 0.207, 0.221, 0.218)
+    c(0.31,  0.298, 0.3,   0.316, 0.311, 0.28,  0.317, 0.265, 0.218,
+      0.218, 0.199, 0.216, 0.218, 0.2,   0.207, 0.221, 0.218)
   )
   comps <- decomposition(fit_sim)
   expct <- (comps$factor + comps$residual + comps$structure)
