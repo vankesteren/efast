@@ -4,7 +4,9 @@
 \name{roi_volume}
 \alias{roi_volume}
 \title{Synthesised volume data for DKT-atlas ROIs.}
-\format{A data frame with 647 rows and 68 columns}
+\format{
+A data frame with 647 rows and 68 columns
+}
 \usage{
 data(roi_volume)
 }

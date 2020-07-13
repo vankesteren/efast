@@ -4,16 +4,31 @@
 \alias{cplot}
 \title{Create a clean correlation plot}
 \usage{
-cplot(mat, ...)
+cplot(
+  mat,
+  tl.pos = "n",
+  cl.pos = "n",
+  method = "square",
+  addgrid.col = NA,
+  ...
+)
 }
 \arguments{
 \item{mat}{<matrix> or <list<matrix>> the matrix or list of matrices to be
 displayed.}
 
+\item{tl.pos}{<string> text label position, see corrplot::corrplot()}
+
+\item{cl.pos}{<string> color label position, see corrplot::corrplot()}
+
+\item{method}{<string> drawing method, see corrplot::corrplot()}
+
+\item{addgrid.col}{<string> grid colour see corrplot::corrplot()}
+
 \item{...}{other arguments passed to corrplot::corrplot()}
 }
 \description{
-This function is a wrapper around corrplot
+This function is a thin wrapper around corrplot
 }
 \seealso{
 \code{\link[corrplot]{corrplot}}
