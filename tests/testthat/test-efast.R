@@ -58,7 +58,8 @@ test_that("EFAST fitting on big data works", {
     M = 3,
     lh_idx = 1:25,
     rh_idx = 26:50,
-    constrain = FALSE
+    constrain = FALSE,
+    store.vcov = TRUE
   )
   expect_true(is_efast_hemi(fit_efast_big))
 })
