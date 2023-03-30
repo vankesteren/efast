@@ -7,7 +7,7 @@
 
 <h4 align="center">Exploratory Factor Analysis with Structured Residuals</h4>
 <p align="center">
-<a href="https://travis-ci.org/vankesteren/efast"><img src="https://travis-ci.org/vankesteren/efast.svg?branch=master"></img></a>
+<a href="https://github.com/vankesteren/efast/actions/workflows/r.yml"><img src="https://github.com/vankesteren/efast/actions/workflows/r.yml/badge.svg"></img></a>
 <a href="https://zenodo.org/badge/latestdoi/197017520"><img src="https://zenodo.org/badge/197017520.svg" alt="DOI"></a><br/>
 </p>
 

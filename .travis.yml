@@ -1,6 +1,0 @@
-language: r
-latex: false
-cache: packages
-r:
-  - release
-  - devel

@@ -2,8 +2,8 @@
 ^\.Rproj\.user$
 ^LICENSE$
 ^README.md$
-^.travis.yml$
 ^img.*$
 ^doc$
 ^Meta$
 ^docs$
+^.github

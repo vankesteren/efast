@@ -48,7 +48,7 @@ test_that("EFA fitting works", {
 })
 
 test_that("EFAST fitting on big data works", {
-  set.seed(45)
+  set.seed(46)
   test_dat <- matrix(rnorm(5000), 100)
   test_dat <- as.data.frame(
     test_dat %*% chol(toeplitz(c(1, rep(0, 24), 0.5, rep(0, 24))))
