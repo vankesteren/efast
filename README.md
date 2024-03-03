@@ -23,7 +23,7 @@ remotes::install_github("vankesteren/efast")
 ```
 
 #### Quickstart
-To quickly fit an EFAST model and see the structure of the data required, you can use simulated data from the package:
+To fit an EFAST model and see the structure of the data required, you can use simulated data from the package:
 ```r
 library(efast)
 simdat <- simulate_efast()
